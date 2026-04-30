@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../core/theme/music_theme.dart';
+import '../core/theme/theme_provider.dart';
 import '../widgets/glass_container.dart';
 
 class PlaylistScreen extends StatelessWidget {
-  final MusicThemeType themeType;
-
-  const PlaylistScreen({super.key, required this.themeType});
+  const PlaylistScreen({super.key});
 
   final List<Map<String, String>> _songs = const [
     {'title': 'Cosmic Waves', 'artist': 'Nebula Artist', 'duration': '3:58'},
@@ -21,8 +21,11 @@ class PlaylistScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final primaryColor = _getPrimaryColor(themeType);
-    final textColor = _getTextColor(themeType);
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final themeType = themeProvider.currentTheme;
+    final primaryColor = MusicTheme.getPrimaryColor(themeType);
+    final textColor = MusicTheme.getTextColor(themeType);
+    final secondaryColor = MusicTheme.getSecondaryColor(themeType);
 
     return Container(
       decoration: MusicTheme.cosmicBackground(themeType),
@@ -40,7 +43,7 @@ class PlaylistScreen extends StatelessWidget {
                     style: GoogleFonts.orbitron(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
-                      color: textColor.withValues(alpha: 0.5),
+                      color: textColor.withOpacity(0.5),
                       letterSpacing: 2,
                     ),
                   ),
@@ -58,7 +61,7 @@ class PlaylistScreen extends StatelessWidget {
                     '${_songs.length} tracks',
                     style: GoogleFonts.inter(
                       fontSize: 14,
-                      color: textColor.withValues(alpha: 0.5),
+                      color: textColor.withOpacity(0.5),
                     ),
                   ),
                 ],
@@ -84,10 +87,10 @@ class PlaylistScreen extends StatelessWidget {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
                               gradient: LinearGradient(
-                                colors: [primaryColor.withValues(alpha: 0.5), _getSecondaryColor(themeType).withValues(alpha: 0.3)],
+                                colors: [primaryColor.withOpacity(0.5), secondaryColor.withOpacity(0.3)],
                               ),
                             ),
-                            child: Icon(Icons.music_note, color: textColor.withValues(alpha: 0.7)),
+                            child: Icon(Icons.music_note, color: textColor.withOpacity(0.7)),
                           ),
                           const SizedBox(width: 16),
                           Expanded(
@@ -107,7 +110,7 @@ class PlaylistScreen extends StatelessWidget {
                                   song['artist']!,
                                   style: GoogleFonts.inter(
                                     fontSize: 14,
-                                    color: textColor.withValues(alpha: 0.5),
+                                    color: textColor.withOpacity(0.5),
                                   ),
                                 ),
                               ],
@@ -117,11 +120,11 @@ class PlaylistScreen extends StatelessWidget {
                             song['duration']!,
                             style: GoogleFonts.inter(
                               fontSize: 14,
-                              color: textColor.withValues(alpha: 0.5),
+                              color: textColor.withOpacity(0.5),
                             ),
                           ),
                           const SizedBox(width: 8),
-                          Icon(Icons.more_vert, color: textColor.withValues(alpha: 0.5)),
+                          Icon(Icons.more_vert, color: textColor.withOpacity(0.5)),
                         ],
                       ),
                     ),
@@ -133,35 +136,5 @@ class PlaylistScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Color _getPrimaryColor(MusicThemeType type) {
-    switch (type) {
-      case MusicThemeType.emberOdyssey: return MusicTheme.emberPrimary;
-      case MusicThemeType.auroraWave: return MusicTheme.auroraPrimary;
-      case MusicThemeType.goldenEclipse: return MusicTheme.goldenPrimary;
-      case MusicThemeType.galaxyStorm: return MusicTheme.galaxyPrimary;
-      case MusicThemeType.immersive: return MusicTheme.immersivePrimary;
-    }
-  }
-
-  Color _getTextColor(MusicThemeType type) {
-    switch (type) {
-      case MusicThemeType.emberOdyssey: return MusicTheme.emberText;
-      case MusicThemeType.auroraWave: return MusicTheme.auroraText;
-      case MusicThemeType.goldenEclipse: return MusicTheme.goldenText;
-      case MusicThemeType.galaxyStorm: return MusicTheme.galaxyText;
-      case MusicThemeType.immersive: return MusicTheme.immersiveText;
-    }
-  }
-
-  Color _getSecondaryColor(MusicThemeType type) {
-    switch (type) {
-      case MusicThemeType.emberOdyssey: return MusicTheme.emberSecondary;
-      case MusicThemeType.auroraWave: return MusicTheme.auroraSecondary;
-      case MusicThemeType.goldenEclipse: return MusicTheme.goldenSecondary;
-      case MusicThemeType.galaxyStorm: return MusicTheme.galaxySecondary;
-      case MusicThemeType.immersive: return MusicTheme.immersiveSecondary;
-    }
   }
 }

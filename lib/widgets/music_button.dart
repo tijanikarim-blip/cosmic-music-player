@@ -27,13 +27,7 @@ class MusicButton extends StatelessWidget {
 
   Color _getColor() {
     if (color != null) return color!;
-    switch (themeType!) {
-      case MusicThemeType.emberOdyssey: return MusicTheme.emberPrimary;
-      case MusicThemeType.auroraWave: return MusicTheme.auroraPrimary;
-      case MusicThemeType.goldenEclipse: return MusicTheme.goldenPrimary;
-      case MusicThemeType.galaxyStorm: return MusicTheme.galaxyPrimary;
-      case MusicThemeType.immersive: return MusicTheme.immersivePrimary;
-    }
+    return MusicTheme.getPrimaryColor(themeType!);
   }
 
   Color _getTextColor() {
@@ -56,7 +50,7 @@ class MusicButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(borderRadius),
               ),
               padding: padding,
-              shadowColor: btnColor.withValues(alpha: 0.3),
+              shadowColor: btnColor.withOpacity( 0.3),
               elevation: 0,
             ),
             icon: icon != null ? Icon(icon, size: 18) : const SizedBox.shrink(),
@@ -74,7 +68,7 @@ class MusicButton extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: btnColor,
               foregroundColor: txtColor,
-              shadowColor: btnColor.withValues(alpha: 0.5),
+              shadowColor: btnColor.withOpacity( 0.5),
               elevation: 4,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(borderRadius),

@@ -42,7 +42,7 @@ class GlassContainer extends StatelessWidget {
           end: Alignment.bottomRight,
           colors: [
             MusicTheme.glassBackground,
-            MusicTheme.glassBackground.withValues(alpha: 0.1),
+            MusicTheme.glassBackground.withOpacity( 0.1),
           ],
         ),
         borderGradient: LinearGradient(
@@ -50,7 +50,7 @@ class GlassContainer extends StatelessWidget {
           end: Alignment.bottomRight,
           colors: [
             MusicTheme.glassBorder,
-            MusicTheme.glassBorder.withValues(alpha: 0.3),
+            MusicTheme.glassBorder.withOpacity( 0.3),
           ],
         ),
         child: Container(
@@ -61,13 +61,5 @@ class GlassContainer extends StatelessWidget {
     );
   }
 
-  Color _getPrimaryColor(MusicThemeType type) {
-    switch (type) {
-      case MusicThemeType.emberOdyssey: return MusicTheme.emberPrimary;
-      case MusicThemeType.auroraWave: return MusicTheme.auroraPrimary;
-      case MusicThemeType.goldenEclipse: return MusicTheme.goldenPrimary;
-      case MusicThemeType.galaxyStorm: return MusicTheme.galaxyPrimary;
-      case MusicThemeType.immersive: return MusicTheme.immersivePrimary;
-    }
-  }
+  Color _getPrimaryColor(MusicThemeType type) => MusicTheme.getPrimaryColor(type);
 }

@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../core/theme/music_theme.dart';
+import '../core/theme/theme_provider.dart';
 import '../widgets/glass_container.dart';
 
 class SettingsScreen extends StatelessWidget {
-  final MusicThemeType themeType;
+  const SettingsScreen({super.key});
 
-  const SettingsScreen({super.key, required this.themeType});
+  final List<Map<String, dynamic>> _themes = const [
+    {'name': 'Ember Odyssey', 'type': MusicThemeType.emberOdyssey, 'color': MusicTheme.emberPrimary},
+    {'name': 'Aurora Wave', 'type': MusicThemeType.auroraWave, 'color': MusicTheme.auroraPrimary},
+    {'name': 'Golden Eclipse', 'type': MusicThemeType.goldenEclipse, 'color': MusicTheme.goldenPrimary},
+    {'name': 'Galaxy Storm', 'type': MusicThemeType.galaxyStorm, 'color': MusicTheme.galaxyPrimary},
+    {'name': 'Immersive', 'type': MusicThemeType.immersive, 'color': MusicTheme.immersivePrimary},
+  ];
 
   @override
   Widget build(BuildContext context) {
-    final primaryColor = _getPrimaryColor(themeType);
-    final textColor = _getTextColor(themeType);
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final themeType = themeProvider.currentTheme;
+    final primaryColor = MusicTheme.getPrimaryColor(themeType);
+    final textColor = MusicTheme.getTextColor(themeType);
 
     return Container(
       decoration: MusicTheme.cosmicBackground(themeType),
@@ -26,7 +36,7 @@ class SettingsScreen extends StatelessWidget {
                 style: GoogleFonts.orbitron(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
-                  color: textColor.withValues(alpha: 0.5),
+                  color: textColor.withOpacity(0.5),
                   letterSpacing: 2,
                 ),
               ),
@@ -40,13 +50,12 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 32),
-              // Theme Setting
               Text(
                 'THEME',
                 style: GoogleFonts.orbitron(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
-                  color: textColor.withValues(alpha: 0.5),
+                  color: textColor.withOpacity(0.5),
                   letterSpacing: 2,
                 ),
               ),
@@ -56,27 +65,31 @@ class SettingsScreen extends StatelessWidget {
                 borderRadius: 12,
                 padding: const EdgeInsets.all(16),
                 child: Column(
-                  children: [
-                    _buildThemeOption('Ember Odyssey', MusicTheme.emberPrimary, themeType == MusicThemeType.emberOdyssey, textColor),
-                    const SizedBox(height: 12),
-                    _buildThemeOption('Aurora Wave', MusicTheme.auroraPrimary, themeType == MusicThemeType.auroraWave, textColor),
-                    const SizedBox(height: 12),
-                    _buildThemeOption('Golden Eclipse', MusicTheme.goldenPrimary, themeType == MusicThemeType.goldenEclipse, textColor),
-                    const SizedBox(height: 12),
-                    _buildThemeOption('Galaxy Storm', MusicTheme.galaxyPrimary, themeType == MusicThemeType.galaxyStorm, textColor),
-                    const SizedBox(height: 12),
-                    _buildThemeOption('Immersive', MusicTheme.immersivePrimary, themeType == MusicThemeType.immersive, textColor),
-                  ],
+                  children: _themes.map((theme) {
+                    final isSelected = theme['type'] == themeType;
+                    return Column(
+                      children: [
+                        if (theme != _themes.first) const SizedBox(height: 12),
+                        _buildThemeOption(
+                          context,
+                          theme['name'],
+                          theme['color'],
+                          isSelected,
+                          textColor,
+                          () => themeProvider.setTheme(theme['type']),
+                        ),
+                      ],
+                    );
+                  }).toList(),
                 ),
               ),
               const SizedBox(height: 32),
-              // Audio Settings
               Text(
                 'AUDIO',
                 style: GoogleFonts.orbitron(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
-                  color: textColor.withValues(alpha: 0.5),
+                  color: textColor.withOpacity(0.5),
                   letterSpacing: 2,
                 ),
               ),
@@ -102,34 +115,38 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildThemeOption(String name, Color color, bool isSelected, Color textColor) {
-    return Row(
-      children: [
-        Container(
-          width: 24,
-          height: 24,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: color,
-            boxShadow: isSelected ? [MusicTheme.neonShadow(color, blurRadius: 8)] : null,
+  Widget _buildThemeOption(BuildContext context, String name, Color color, bool isSelected, Color textColor, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Row(
+        children: [
+          Container(
+            width: 24,
+            height: 24,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: color,
+              boxShadow: isSelected ? [MusicTheme.neonShadow(color, blurRadius: 8)] : null,
+            ),
+            child: isSelected ? const Icon(Icons.check, size: 16, color: Colors.black) : null,
           ),
-          child: isSelected ? const Icon(Icons.check, size: 16, color: Colors.black) : null,
-        ),
-        const SizedBox(width: 12),
-        Text(
-          name,
-          style: GoogleFonts.inter(
-            fontSize: 16,
-            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-            color: textColor,
+          const SizedBox(width: 12),
+          Text(
+            name,
+            style: GoogleFonts.inter(
+              fontSize: 16,
+              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+              color: textColor,
+            ),
           ),
-        ),
-        const Spacer(),
-        if (isSelected)
-          Icon(Icons.radio_button_checked, color: color, size: 20)
-        else
-          Icon(Icons.radio_button_unchecked, color: textColor.withValues(alpha: 0.3), size: 20),
-      ],
+          const Spacer(),
+          Icon(
+            isSelected ? Icons.radio_button_checked : Icons.radio_button_unchecked,
+            color: isSelected ? color : textColor.withOpacity(0.3),
+            size: 20,
+          ),
+        ],
+      ),
     );
   }
 
@@ -151,25 +168,5 @@ class SettingsScreen extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  Color _getPrimaryColor(MusicThemeType type) {
-    switch (type) {
-      case MusicThemeType.emberOdyssey: return MusicTheme.emberPrimary;
-      case MusicThemeType.auroraWave: return MusicTheme.auroraPrimary;
-      case MusicThemeType.goldenEclipse: return MusicTheme.goldenPrimary;
-      case MusicThemeType.galaxyStorm: return MusicTheme.galaxyPrimary;
-      case MusicThemeType.immersive: return MusicTheme.immersivePrimary;
-    }
-  }
-
-  Color _getTextColor(MusicThemeType type) {
-    switch (type) {
-      case MusicThemeType.emberOdyssey: return MusicTheme.emberText;
-      case MusicThemeType.auroraWave: return MusicTheme.auroraText;
-      case MusicThemeType.goldenEclipse: return MusicTheme.goldenText;
-      case MusicThemeType.galaxyStorm: return MusicTheme.galaxyText;
-      case MusicThemeType.immersive: return MusicTheme.immersiveText;
-    }
   }
 }

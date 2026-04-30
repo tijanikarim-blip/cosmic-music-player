@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../core/theme/music_theme.dart';
+import '../core/theme/theme_provider.dart';
 import 'now_playing_screen.dart';
 import 'playlist_screen.dart';
 import 'settings_screen.dart';
 
 class MainNavigation extends StatefulWidget {
-  final MusicThemeType themeType;
-
-  const MainNavigation({super.key, required this.themeType});
+  const MainNavigation({super.key});
 
   @override
   State<MainNavigation> createState() => _MainNavigationState();
@@ -15,32 +15,45 @@ class MainNavigation extends StatefulWidget {
 
 class _MainNavigationState extends State<MainNavigation> {
   int _currentIndex = 0;
-
-  late final List<Widget> _screens;
+  late PageController _pageController;
 
   @override
   void initState() {
     super.initState();
-    _screens = [
-      NowPlayingScreen(themeType: widget.themeType),
-      PlaylistScreen(themeType: widget.themeType),
-      SettingsScreen(themeType: widget.themeType),
-    ];
+    _pageController = PageController(initialPage: _currentIndex);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Theme(
-      data: MusicTheme.getTheme(widget.themeType),
+      data: MusicTheme.getTheme(themeProvider.currentTheme),
       child: Scaffold(
         body: PageView(
-          controller: PageController(initialPage: _currentIndex),
+          controller: _pageController,
           onPageChanged: (index) => setState(() => _currentIndex = index),
-          children: _screens,
+          children: const [
+            NowPlayingScreen(),
+            PlaylistScreen(),
+            SettingsScreen(),
+          ],
         ),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentIndex,
-          onTap: (index) => setState(() => _currentIndex = index),
+          onTap: (index) {
+            setState(() => _currentIndex = index);
+            _pageController.animateToPage(
+              index,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            );
+          },
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.music_note),

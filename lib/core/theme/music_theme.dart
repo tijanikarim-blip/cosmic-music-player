@@ -66,7 +66,7 @@ class MusicTheme {
       colorScheme: ColorScheme.dark(
         primary: primary,
         secondary: secondary,
-        surface: bg.withValues(alpha: 0.8),
+        surface: bg.withOpacity( 0.8),
         onPrimary: type == MusicThemeType.goldenEclipse ? const Color(0xFF080600) : bg,
         onSecondary: bg,
         onSurface: text,
@@ -75,7 +75,7 @@ class MusicTheme {
         displayLarge: GoogleFonts.orbitron(color: text, fontSize: 32, fontWeight: FontWeight.w700),
         displayMedium: GoogleFonts.orbitron(color: text, fontSize: 24, fontWeight: FontWeight.w600),
         bodyLarge: GoogleFonts.inter(color: text, fontSize: 16),
-        bodyMedium: GoogleFonts.inter(color: text.withValues(alpha: 0.7), fontSize: 14),
+        bodyMedium: GoogleFonts.inter(color: text.withOpacity( 0.7), fontSize: 14),
         labelLarge: GoogleFonts.inter(color: text, fontSize: 14, fontWeight: FontWeight.w600),
       ),
       appBarTheme: AppBarTheme(
@@ -89,7 +89,7 @@ class MusicTheme {
           backgroundColor: primary,
           foregroundColor: type == MusicThemeType.goldenEclipse ? const Color(0xFF080600) : bg,
           elevation: 4,
-          shadowColor: primary.withValues(alpha: 0.5),
+          shadowColor: primary.withOpacity( 0.5),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           textStyle: GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w600),
         ),
@@ -106,13 +106,13 @@ class MusicTheme {
         activeTrackColor: primary,
         inactiveTrackColor: glassBorder,
         thumbColor: primary,
-        overlayColor: primary.withValues(alpha: 0.2),
+        overlayColor: primary.withOpacity( 0.2),
         trackHeight: 4,
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: bg.withValues(alpha: 0.95),
+        backgroundColor: bg.withOpacity( 0.95),
         selectedItemColor: primary,
-        unselectedItemColor: text.withValues(alpha: 0.5),
+        unselectedItemColor: text.withOpacity( 0.5),
         type: BottomNavigationBarType.fixed,
         elevation: 8,
         selectedLabelStyle: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w600),
@@ -122,7 +122,7 @@ class MusicTheme {
   }
 
   static BoxShadow neonShadow(Color color, {double blurRadius = 12}) {
-    return BoxShadow(color: color.withValues(alpha: 0.6), blurRadius: blurRadius, spreadRadius: 2);
+    return BoxShadow(color: color.withOpacity( 0.6), blurRadius: blurRadius, spreadRadius: 2);
   }
 
   static BoxDecoration glassDecoration(Color glowColor, {double borderRadius = 16}) {
@@ -132,6 +132,36 @@ class MusicTheme {
       border: Border.all(color: glassBorder, width: 1),
       boxShadow: [neonShadow(glowColor, blurRadius: 8)],
     );
+  }
+
+  static Color getPrimaryColor(MusicThemeType type) {
+    switch (type) {
+      case MusicThemeType.emberOdyssey: return emberPrimary;
+      case MusicThemeType.auroraWave: return auroraPrimary;
+      case MusicThemeType.goldenEclipse: return goldenPrimary;
+      case MusicThemeType.galaxyStorm: return galaxyPrimary;
+      case MusicThemeType.immersive: return immersivePrimary;
+    }
+  }
+
+  static Color getTextColor(MusicThemeType type) {
+    switch (type) {
+      case MusicThemeType.emberOdyssey: return emberText;
+      case MusicThemeType.auroraWave: return auroraText;
+      case MusicThemeType.goldenEclipse: return goldenText;
+      case MusicThemeType.galaxyStorm: return galaxyText;
+      case MusicThemeType.immersive: return immersiveText;
+    }
+  }
+
+  static Color getSecondaryColor(MusicThemeType type) {
+    switch (type) {
+      case MusicThemeType.emberOdyssey: return emberSecondary;
+      case MusicThemeType.auroraWave: return auroraSecondary;
+      case MusicThemeType.goldenEclipse: return goldenSecondary;
+      case MusicThemeType.galaxyStorm: return galaxySecondary;
+      case MusicThemeType.immersive: return immersiveSecondary;
+    }
   }
 
   static BoxDecoration cosmicBackground(MusicThemeType type) {

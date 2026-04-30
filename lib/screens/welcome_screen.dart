@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../core/theme/music_theme.dart';
+import '../core/theme/theme_provider.dart';
 import '../widgets/glass_container.dart';
 import '../widgets/music_button.dart';
 import 'main_navigation.dart';
@@ -15,7 +17,7 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   MusicThemeType _selectedTheme = MusicThemeType.galaxyStorm;
 
-  final List<Map<String, dynamic>> _themes = [
+  final List<Map<String, dynamic>> _themes = const [
     {'type': MusicThemeType.emberOdyssey, 'name': 'Ember Odyssey', 'color': MusicTheme.emberPrimary},
     {'type': MusicThemeType.auroraWave, 'name': 'Aurora Wave', 'color': MusicTheme.auroraPrimary},
     {'type': MusicThemeType.goldenEclipse, 'name': 'Golden Eclipse', 'color': MusicTheme.goldenPrimary},
@@ -23,8 +25,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     {'type': MusicThemeType.immersive, 'name': 'Immersive', 'color': MusicTheme.immersivePrimary},
   ];
 
+  Color _getTextColor(MusicThemeType type) => MusicTheme.getTextColor(type);
+
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     return Theme(
       data: MusicTheme.getTheme(_selectedTheme),
       child: Scaffold(
@@ -37,7 +42,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Spacer(),
-                  // App Logo/Icon
                   Icon(
                     Icons.graphic_eq,
                     size: 80,
@@ -63,17 +67,16 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     'Experience music in deep space',
                     style: GoogleFonts.inter(
                       fontSize: 16,
-                      color: _getTextColor(_selectedTheme).withValues(alpha: 0.7),
+                      color: _getTextColor(_selectedTheme).withOpacity(0.7),
                     ),
                   ),
                   const Spacer(),
-                  // Theme Selector
                   Text(
                     'SELECT THEME',
                     style: GoogleFonts.orbitron(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
-                      color: _getTextColor(_selectedTheme).withValues(alpha: 0.5),
+                      color: _getTextColor(_selectedTheme).withOpacity(0.5),
                       letterSpacing: 2,
                     ),
                   ),
@@ -114,7 +117,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                   style: GoogleFonts.inter(
                                     fontSize: 10,
                                     fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                                    color: _getTextColor(_selectedTheme).withValues(alpha: 0.8),
+                                    color: _getTextColor(_selectedTheme).withOpacity(0.8),
                                   ),
                                 ),
                               ],
@@ -125,7 +128,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  // Enter Button
                   GlassContainer(
                     themeType: _selectedTheme,
                     width: double.infinity,
@@ -133,9 +135,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     child: MusicButton(
                       label: 'ENTER THE COSMOS',
                       onPressed: () {
+                        themeProvider.setTheme(_selectedTheme);
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (context) => MainNavigation(themeType: _selectedTheme),
+                            builder: (context) => const MainNavigation(),
                           ),
                         );
                       },
@@ -155,15 +158,5 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         ),
       ),
     );
-  }
-
-  Color _getTextColor(MusicThemeType type) {
-    switch (type) {
-      case MusicThemeType.emberOdyssey: return MusicTheme.emberText;
-      case MusicThemeType.auroraWave: return MusicTheme.auroraText;
-      case MusicThemeType.goldenEclipse: return MusicTheme.goldenText;
-      case MusicThemeType.galaxyStorm: return MusicTheme.galaxyText;
-      case MusicThemeType.immersive: return MusicTheme.immersiveText;
-    }
   }
 }
