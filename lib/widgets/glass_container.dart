@@ -30,28 +30,24 @@ class GlassContainer extends StatelessWidget {
       decoration: BoxDecoration(
         boxShadow: [MusicTheme.neonShadow(glowColor, blurRadius: 8)],
       ),
-      child: GlassmorphicContainer(
-        width: width ?? double.infinity,
-        height: height ?? double.infinity,
-        borderRadius: borderRadius,
-        blur: 20,
-        alignment: Alignment.center,
-        border: 1,
-        linearGradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            MusicTheme.glassBackground,
-            MusicTheme.glassBackground.withOpacity( 0.1),
-          ],
-        ),
-        borderGradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            MusicTheme.glassBorder,
-            MusicTheme.glassBorder.withOpacity( 0.3),
-          ],
+      child: Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(borderRadius),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              MusicTheme.glassBackground,
+              MusicTheme.glassBackground.withOpacity(0.1),
+            ],
+          ),
+          border: Border.all(
+            color: MusicTheme.glassBorder,
+            width: 1,
+          ),
+          boxShadow: [MusicTheme.neonShadow(glowColor, blurRadius: 8)],
         ),
         child: Container(
           padding: padding ?? const EdgeInsets.all(16),

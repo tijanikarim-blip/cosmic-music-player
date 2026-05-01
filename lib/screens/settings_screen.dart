@@ -5,15 +5,55 @@ import '../core/theme/music_theme.dart';
 import '../core/theme/theme_provider.dart';
 import '../widgets/glass_container.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
-  final List<Map<String, dynamic>> _themes = const [
-    {'name': 'Ember Odyssey', 'type': MusicThemeType.emberOdyssey, 'color': MusicTheme.emberPrimary},
-    {'name': 'Aurora Wave', 'type': MusicThemeType.auroraWave, 'color': MusicTheme.auroraPrimary},
-    {'name': 'Golden Eclipse', 'type': MusicThemeType.goldenEclipse, 'color': MusicTheme.goldenPrimary},
-    {'name': 'Galaxy Storm', 'type': MusicThemeType.galaxyStorm, 'color': MusicTheme.galaxyPrimary},
-    {'name': 'Immersive', 'type': MusicThemeType.immersive, 'color': MusicTheme.immersivePrimary},
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  bool _darkMode = true;
+  bool _audio3D = true;
+  bool _headTracking = true;
+  bool _highQuality = true;
+
+  static const List<Map<String, dynamic>> _themes = [
+    {
+      'name': 'Ember Odyssey',
+      'type': MusicThemeType.emberOdyssey,
+      'color': MusicTheme.emberPrimary,
+      'secondary': MusicTheme.emberSecondary,
+      'subtitle': 'Fire & Lava',
+    },
+    {
+      'name': 'Aurora Wave',
+      'type': MusicThemeType.auroraWave,
+      'color': MusicTheme.auroraPrimary,
+      'secondary': MusicTheme.auroraSecondary,
+      'subtitle': 'Northern Lights',
+    },
+    {
+      'name': 'Golden Eclipse',
+      'type': MusicThemeType.goldenEclipse,
+      'color': MusicTheme.goldenPrimary,
+      'secondary': MusicTheme.goldenSecondary,
+      'subtitle': 'Solar Gold',
+    },
+    {
+      'name': 'Galaxy Storm',
+      'type': MusicThemeType.galaxyStorm,
+      'color': MusicTheme.galaxyPrimary,
+      'secondary': MusicTheme.galaxySecondary,
+      'subtitle': 'Deep Space',
+    },
+    {
+      'name': 'Immersive',
+      'type': MusicThemeType.immersive,
+      'color': MusicTheme.immersivePrimary,
+      'secondary': MusicTheme.immersiveSecondary,
+      'subtitle': 'Cosmic Deep',
+    },
   ];
 
   @override
@@ -23,88 +63,288 @@ class SettingsScreen extends StatelessWidget {
     final primaryColor = MusicTheme.getPrimaryColor(themeType);
     final textColor = MusicTheme.getTextColor(themeType);
 
+    final currentThemeData = _themes.firstWhere((t) => t['type'] == themeType);
+
     return Container(
       decoration: MusicTheme.cosmicBackground(themeType),
       child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'SETTINGS',
-                style: GoogleFonts.orbitron(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: textColor.withOpacity(0.5),
-                  letterSpacing: 2,
-                ),
+              // Header
+              Row(
+                children: [
+                  const Icon(Icons.arrow_back_ios, color: Colors.white70, size: 20),
+                  const Spacer(),
+                  Text(
+                    'Settings',
+                    style: GoogleFonts.orbitron(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: textColor,
+                    ),
+                  ),
+                  const Spacer(),
+                  const Icon(Icons.more_horiz, color: Colors.white70, size: 22),
+                ],
               ),
-              const SizedBox(height: 8),
-              Text(
-                'Preferences',
-                style: GoogleFonts.orbitron(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w700,
-                  color: textColor,
-                ),
-              ),
-              const SizedBox(height: 32),
-              Text(
-                'THEME',
-                style: GoogleFonts.orbitron(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: textColor.withOpacity(0.5),
-                  letterSpacing: 2,
-                ),
-              ),
-              const SizedBox(height: 16),
+
+              const SizedBox(height: 24),
+
+              // Active Theme Card
               GlassContainer(
                 themeType: themeType,
-                borderRadius: 12,
+                borderRadius: 18,
                 padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: _themes.map((theme) {
-                    final isSelected = theme['type'] == themeType;
-                    return Column(
-                      children: [
-                        if (theme != _themes.first) const SizedBox(height: 12),
-                        _buildThemeOption(
-                          context,
-                          theme['name'],
-                          theme['color'],
-                          isSelected,
-                          textColor,
-                          () => themeProvider.setTheme(theme['type']),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 56,
+                      height: 56,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            currentThemeData['color'] as Color,
+                            currentThemeData['secondary'] as Color,
+                          ],
                         ),
-                      ],
+                        boxShadow: [
+                          MusicTheme.neonShadow(
+                            currentThemeData['color'] as Color,
+                            blurRadius: 12,
+                          ),
+                        ],
+                      ),
+                      child: const Icon(Icons.auto_awesome, color: Colors.black, size: 26),
+                    ),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            currentThemeData['name'] as String,
+                            style: GoogleFonts.orbitron(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                              color: currentThemeData['color'] as Color,
+                            ),
+                          ),
+                          Text(
+                            'Theme',
+                            style: GoogleFonts.inter(
+                              fontSize: 12,
+                              color: textColor.withOpacity(0.5),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: primaryColor.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: primaryColor.withOpacity(0.3)),
+                      ),
+                      child: Text(
+                        'Active',
+                        style: GoogleFonts.inter(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: primaryColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // Theme Store heading
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Theme Store',
+                    style: GoogleFonts.orbitron(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: textColor,
+                    ),
+                  ),
+                  Text(
+                    'See all',
+                    style: GoogleFonts.inter(
+                      fontSize: 13,
+                      color: primaryColor,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 14),
+
+              // Theme Store horizontal scroll cards
+              SizedBox(
+                height: 100,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _themes.length,
+                  itemBuilder: (context, index) {
+                    final theme = _themes[index];
+                    final isActive = theme['type'] == themeType;
+                    return GestureDetector(
+                      onTap: () => themeProvider.setTheme(theme['type'] as MusicThemeType),
+                      child: Container(
+                        width: 80,
+                        margin: const EdgeInsets.only(right: 12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(14),
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              (theme['color'] as Color).withOpacity(0.5),
+                              (theme['secondary'] as Color).withOpacity(0.3),
+                            ],
+                          ),
+                          border: Border.all(
+                            color: isActive
+                                ? (theme['color'] as Color)
+                                : Colors.white.withOpacity(0.1),
+                            width: isActive ? 2 : 1,
+                          ),
+                          boxShadow: isActive
+                              ? [MusicTheme.neonShadow(theme['color'] as Color, blurRadius: 10)]
+                              : null,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    (theme['name'] as String).split(' ').first,
+                                    style: GoogleFonts.inter(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  if (isActive)
+                                    Text(
+                                      'Active',
+                                      style: GoogleFonts.inter(
+                                        fontSize: 9,
+                                        color: theme['color'] as Color,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     );
-                  }).toList(),
+                  },
                 ),
               ),
-              const SizedBox(height: 32),
-              Text(
-                'AUDIO',
-                style: GoogleFonts.orbitron(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: textColor.withOpacity(0.5),
-                  letterSpacing: 2,
-                ),
-              ),
-              const SizedBox(height: 16),
+
+              const SizedBox(height: 28),
+
+              // Settings toggles
               GlassContainer(
                 themeType: themeType,
-                borderRadius: 12,
-                padding: const EdgeInsets.all(16),
+                borderRadius: 18,
+                padding: EdgeInsets.zero,
                 child: Column(
                   children: [
-                    _buildSettingToggle('High Quality Audio', true, primaryColor, textColor),
-                    const Divider(color: Colors.white12),
-                    _buildSettingToggle('Equalizer', false, primaryColor, textColor),
-                    const Divider(color: Colors.white12),
-                    _buildSettingToggle('Crossfade', true, primaryColor, textColor),
+                    _buildToggleRow(
+                      icon: Icons.dark_mode,
+                      label: 'Dark Mode',
+                      value: _darkMode,
+                      color: primaryColor,
+                      textColor: textColor,
+                      onChanged: (v) => setState(() => _darkMode = v),
+                      showDivider: true,
+                    ),
+                    _buildToggleRow(
+                      icon: Icons.surround_sound,
+                      label: '3D Audio',
+                      value: _audio3D,
+                      color: primaryColor,
+                      textColor: textColor,
+                      onChanged: (v) => setState(() => _audio3D = v),
+                      showDivider: true,
+                    ),
+                    _buildToggleRow(
+                      icon: Icons.sensors,
+                      label: 'Head Tracking',
+                      value: _headTracking,
+                      color: primaryColor,
+                      textColor: textColor,
+                      onChanged: (v) => setState(() => _headTracking = v),
+                      showDivider: true,
+                    ),
+                    _buildNavRow(
+                      icon: Icons.high_quality,
+                      label: 'High Quality Audio',
+                      trailingLabel: 'FLAC',
+                      color: primaryColor,
+                      textColor: textColor,
+                      showDivider: true,
+                    ),
+                    _buildNavRow(
+                      icon: Icons.equalizer,
+                      label: 'Equalizer',
+                      color: primaryColor,
+                      textColor: textColor,
+                      showDivider: false,
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Additional settings
+              GlassContainer(
+                themeType: themeType,
+                borderRadius: 18,
+                padding: EdgeInsets.zero,
+                child: Column(
+                  children: [
+                    _buildNavRow(
+                      icon: Icons.nightlight,
+                      label: 'Sleep Timer',
+                      color: primaryColor,
+                      textColor: textColor,
+                      showDivider: true,
+                    ),
+                    _buildNavRow(
+                      icon: Icons.language,
+                      label: 'Language',
+                      trailingLabel: 'English',
+                      color: primaryColor,
+                      textColor: textColor,
+                      showDivider: true,
+                    ),
+                    _buildNavRow(
+                      icon: Icons.info_outline,
+                      label: 'About',
+                      color: primaryColor,
+                      textColor: textColor,
+                      showDivider: false,
+                    ),
                   ],
                 ),
               ),
@@ -115,57 +355,88 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildThemeOption(BuildContext context, String name, Color color, bool isSelected, Color textColor, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Row(
-        children: [
-          Container(
-            width: 24,
-            height: 24,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: color,
-              boxShadow: isSelected ? [MusicTheme.neonShadow(color, blurRadius: 8)] : null,
-            ),
-            child: isSelected ? const Icon(Icons.check, size: 16, color: Colors.black) : null,
+  Widget _buildToggleRow({
+    required IconData icon,
+    required String label,
+    required bool value,
+    required Color color,
+    required Color textColor,
+    required ValueChanged<bool> onChanged,
+    required bool showDivider,
+  }) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          child: Row(
+            children: [
+              Icon(icon, color: color, size: 20),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Text(
+                  label,
+                  style: GoogleFonts.inter(
+                    fontSize: 15,
+                    color: textColor,
+                  ),
+                ),
+              ),
+              Switch(
+                value: value,
+                onChanged: onChanged,
+                activeColor: color,
+                activeTrackColor: color.withOpacity(0.35),
+              ),
+            ],
           ),
-          const SizedBox(width: 12),
-          Text(
-            name,
-            style: GoogleFonts.inter(
-              fontSize: 16,
-              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-              color: textColor,
-            ),
-          ),
-          const Spacer(),
-          Icon(
-            isSelected ? Icons.radio_button_checked : Icons.radio_button_unchecked,
-            color: isSelected ? color : textColor.withOpacity(0.3),
-            size: 20,
-          ),
-        ],
-      ),
+        ),
+        if (showDivider)
+          Divider(height: 1, color: Colors.white.withOpacity(0.07)),
+      ],
     );
   }
 
-  Widget _buildSettingToggle(String title, bool value, Color primaryColor, Color textColor) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Widget _buildNavRow({
+    required IconData icon,
+    required String label,
+    String? trailingLabel,
+    required Color color,
+    required Color textColor,
+    required bool showDivider,
+  }) {
+    return Column(
       children: [
-        Text(
-          title,
-          style: GoogleFonts.inter(
-            fontSize: 16,
-            color: textColor,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          child: Row(
+            children: [
+              Icon(icon, color: color, size: 20),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Text(
+                  label,
+                  style: GoogleFonts.inter(fontSize: 15, color: textColor),
+                ),
+              ),
+              if (trailingLabel != null)
+                Text(
+                  trailingLabel,
+                  style: GoogleFonts.inter(
+                    fontSize: 13,
+                    color: textColor.withOpacity(0.5),
+                  ),
+                ),
+              const SizedBox(width: 6),
+              Icon(
+                Icons.arrow_forward_ios,
+                color: textColor.withOpacity(0.4),
+                size: 14,
+              ),
+            ],
           ),
         ),
-        Switch(
-          value: value,
-          onChanged: (val) {},
-          activeThumbColor: primaryColor,
-        ),
+        if (showDivider)
+          Divider(height: 1, color: Colors.white.withOpacity(0.07)),
       ],
     );
   }

@@ -167,7 +167,7 @@ class RotatingAlbumArt extends StatefulWidget {
 }
 
 class _RotatingAlbumArtState extends State<RotatingAlbumArt>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late AnimationController _rotationController;
   late AnimationController _breathingController;
 
