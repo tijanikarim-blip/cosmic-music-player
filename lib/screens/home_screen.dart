@@ -16,13 +16,7 @@ class HomeScreen extends StatelessWidget {
     {'name': 'Cosmic Journey', 'count': 14},
   ];
 
-  static const List<Map<String, String>> _recentSongs = [
-    {'title': 'Beyond the Horizon', 'artist': 'Luna Orbit', 'duration': '4:08'},
-    {'title': 'Night Whisper', 'artist': 'Solara', 'duration': '3:45'},
-    {'title': 'Ocean of Dreams', 'artist': 'Luna Orbit', 'duration': '4:12'},
-    {'title': 'Echoes in Space', 'artist': 'Stellar Drift', 'duration': '3:58'},
-    {'title': 'Lost in Mind', 'artist': 'Aurora Waves', 'duration': '4:33'},
-  ];
+
 
   @override
   Widget build(BuildContext context) {

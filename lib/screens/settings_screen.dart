@@ -16,7 +16,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _darkMode = true;
   bool _audio3D = true;
   bool _headTracking = true;
-  bool _highQuality = true;
+
 
   static const List<Map<String, dynamic>> _themes = [
     {

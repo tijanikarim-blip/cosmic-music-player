@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-import '../core/theme/music_theme.dart';
+
 
 class AlbumArtWidget extends StatefulWidget {
   final double size;
@@ -128,8 +128,10 @@ class GeometricPainter extends CustomPainter {
     for (int i = 0; i < 6; i++) {
       final angle = (i / 6) * 2 * pi + progress * 2 * pi;
       final radius = size.width * 0.35;
+      final dx = center.dx + cos(angle) * radius * 0.3;
+      final dy = center.dy + sin(angle) * radius * 0.3;
       paint.color = (i.isEven ? primary : secondary).withOpacity(0.5);
-      canvas.drawCircle(center, radius, paint);
+      canvas.drawCircle(Offset(dx, dy), radius * 0.7, paint);
     }
   }
 

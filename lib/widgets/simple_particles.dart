@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-import '../core/theme/music_theme.dart';
+
 
 class SimpleParticlesPainter extends CustomPainter {
   final Color color;
