@@ -5,31 +5,31 @@ enum MusicThemeType { emberOdyssey, auroraWave, goldenEclipse, galaxyStorm, imme
 
 class MusicTheme {
   // Ember Odyssey Theme
-  static const Color emberBg = Color(0xFF0D0501);
+  static const Color emberBg = Color(0xFF1A0A02);
   static const Color emberPrimary = Color(0xFFFF4500);
   static const Color emberSecondary = Color(0xFFFF8C00);
   static const Color emberText = Color(0xFFFFD580);
 
   // Aurora Wave Theme
-  static const Color auroraBg = Color(0xFF050A14);
+  static const Color auroraBg = Color(0xFF0A1428);
   static const Color auroraPrimary = Color(0xFF00E5FF);
   static const Color auroraSecondary = Color(0xFF7B2FFF);
   static const Color auroraText = Color(0xFFE0F7FF);
 
   // Golden Eclipse Theme
-  static const Color goldenBg = Color(0xFF080600);
+  static const Color goldenBg = Color(0xFF1A1400);
   static const Color goldenPrimary = Color(0xFFFFB800);
   static const Color goldenSecondary = Color(0xFFD4820A);
   static const Color goldenText = Color(0xFFFFF3CC);
 
   // Galaxy Storm Theme
-  static const Color galaxyBg = Color(0xFF06030F);
+  static const Color galaxyBg = Color(0xFF0C06A3);
   static const Color galaxyPrimary = Color(0xFF7C3FFF);
   static const Color galaxySecondary = Color(0xFF2D9CFF);
   static const Color galaxyText = Color(0xFFE8DFFF);
 
   // Immersive/Cosmic Deep Theme
-  static const Color immersiveBg = Color(0xFF04020E);
+  static const Color immersiveBg = Color(0xFF080428);
   static const Color immersivePrimary = Color(0xFFC040FF);
   static const Color immersiveSecondary = Color(0xFF4B00CC);
   static const Color immersiveText = Color(0xFFDDD0FF);

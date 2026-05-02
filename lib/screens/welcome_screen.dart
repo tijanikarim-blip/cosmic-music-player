@@ -90,7 +90,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         final theme = _themes[index];
                         final isSelected = theme['type'] == _selectedTheme;
                         return GestureDetector(
-                          onTap: () => setState(() => _selectedTheme = theme['type']),
+                          onTap: () {
+                            setState(() => _selectedTheme = theme['type']);
+                            themeProvider.setTheme(theme['type']);
+                          },
                           child: Container(
                             width: 80,
                             margin: const EdgeInsets.symmetric(horizontal: 8),
