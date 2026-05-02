@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -48,24 +47,7 @@ class AudioProvider extends ChangeNotifier {
       }
       notifyListeners();
     });
-    _loadPlaylist().then((_) {
-      if (_songs.isEmpty) {
-        _addSampleSong();
-      }
-    });
-  }
-
-  Future<void> _addSampleSong() async {
-    final samplePath = 'assets/samples/sample.mp3';
-    final file = File(samplePath);
-    if (await file.exists() && !await _isSampleAdded()) {
-      await addSongs([samplePath]);
-    }
-  }
-
-  Future<bool> _isSampleAdded() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool('sample_added') ?? false;
+    _loadPlaylist();
   }
 
   Future<void> _loadPlaylist() async {
@@ -74,16 +56,11 @@ class AudioProvider extends ChangeNotifier {
     final songs = <SongModel>[];
     for (final path in paths) {
       if (File(path).existsSync()) {
-        try {
-          final metadata = await MetadataRetriever.fromFile(File(path));
-          songs.add(SongModel.fromMetadata(metadata, path));
-        } catch (_) {
-          songs.add(SongModel(
-            title: path.split('/').last.replaceAll('.mp3', ''),
-            artist: 'Unknown',
-            path: path,
-          ));
-        }
+        songs.add(SongModel(
+          title: path.split('/').last.split('\\').last.replaceAll('.mp3', ''),
+          artist: 'Unknown Artist',
+          path: path,
+        ));
       }
     }
     _songs = songs;
@@ -97,16 +74,11 @@ class AudioProvider extends ChangeNotifier {
 
   Future<void> addSongs(List<String> paths) async {
     for (final path in paths) {
-      try {
-        final metadata = await MetadataRetriever.fromFile(File(path));
-        _songs.add(SongModel.fromMetadata(metadata, path));
-      } catch (_) {
-        _songs.add(SongModel(
-          title: path.split('/').last.replaceAll('.mp3', ''),
-          artist: 'Unknown',
-          path: path,
-        ));
-      }
+      _songs.add(SongModel(
+        title: path.split('/').last.split('\\').last.replaceAll('.mp3', ''),
+        artist: 'Unknown Artist',
+        path: path,
+      ));
     }
     await _savePlaylist();
     notifyListeners();
@@ -126,27 +98,11 @@ class AudioProvider extends ChangeNotifier {
   }
 
   Future<void> addSampleSong() async {
-    final assetsDir = Directory('assets/samples');
-    if (!await assetsDir.exists()) {
-      await assetsDir.create(recursive: true);
-    }
     final samplePath = 'assets/samples/sample.mp3';
-    if (!File(samplePath).existsSync()) {
-      // Create a minimal valid MP3 file (silent)
-      final bytes = _generateSilentMp3();
-      await File(samplePath).writeAsBytes(bytes);
+    final file = File(samplePath);
+    if (await file.exists() && !_songs.any((s) => s.path.contains('sample.mp3'))) {
+      await addSongs([samplePath]);
     }
-    await addSongs([samplePath]);
-  }
-
-  List<int> _generateSilentMp3() {
-    // Generate a minimal valid MP3 frame (silent, ~1 second)
-    // This is a very simple silent MP3 frame
-    final List<int> mp3 = [];
-    // MP3 header for silent frame (simplified)
-    // In practice, you'd want a real sample; this is just a placeholder
-    // We'll return empty and let user add real MP3
-    return mp3;
   }
 
   void playSong(int index) {
@@ -259,17 +215,6 @@ class SongModel {
     this.duration = Duration.zero,
     this.albumArtBytes,
   });
-
-  factory SongModel.fromMetadata(Metadata metadata, String path) {
-    return SongModel(
-      title: metadata.trackName ?? path.split('/').last.replaceAll('.mp3', ''),
-      artist: metadata.trackArtistNames?.join(', ') ?? 'Unknown',
-      album: metadata.albumName ?? '',
-      path: path,
-      duration: metadata.trackDuration != null ? Duration(milliseconds: metadata.trackDuration!) : Duration.zero,
-      albumArtBytes: metadata.albumArt,
-    );
-  }
 
   String get durationText {
     if (duration == Duration.zero) return '0:00';
