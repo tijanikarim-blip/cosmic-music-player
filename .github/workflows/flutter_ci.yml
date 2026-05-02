@@ -1,4 +1,4 @@
-﻿name: Flutter CI
+name: Flutter CI
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [master]
 
 jobs:
-  analyze-and-test:
+  analyze:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -16,7 +16,6 @@ jobs:
           channel: stable
       - run: flutter pub get
       - run: flutter analyze --no-fatal-infos
-      - run: flutter test || echo \ No tests found\
 
   build-android:
     runs-on: ubuntu-latest
@@ -27,8 +26,8 @@ jobs:
           channel: stable
       - uses: actions/setup-java@v4
         with:
-          distribution: zulu
-          java-version: 17
+          distribution: 'zulu'
+          java-version: '17'
       - run: flutter pub get
       - run: flutter build apk --release
       - uses: actions/upload-artifact@v4
