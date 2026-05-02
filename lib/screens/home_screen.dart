@@ -3,12 +3,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../core/theme/music_theme.dart';
 import '../core/theme/theme_provider.dart';
+import '../core/audio/audio_provider.dart';
 import '../widgets/glass_container.dart';
 
 class HomeScreen extends StatelessWidget {
-  final VoidCallback? onSongTap;
-  const HomeScreen({super.key, this.onSongTap});
+  const HomeScreen({super.key});
 
+  // ignore: unused_field
   static const List<Map<String, dynamic>> _playlists = [
     {'name': 'Chill Vibes', 'count': 23},
     {'name': 'Night Drive', 'count': 18},
@@ -16,15 +17,18 @@ class HomeScreen extends StatelessWidget {
     {'name': 'Cosmic Journey', 'count': 14},
   ];
 
-
-
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    final audioProvider = Provider.of<AudioProvider>(context);
     final themeType = themeProvider.currentTheme;
     final primaryColor = MusicTheme.getPrimaryColor(themeType);
     final textColor = MusicTheme.getTextColor(themeType);
     final secondaryColor = MusicTheme.getSecondaryColor(themeType);
+
+    final songs = audioProvider.songs;
+    final currentSong = audioProvider.currentSong;
+    final isPlaying = audioProvider.isPlaying;
 
     return Container(
       decoration: MusicTheme.cosmicBackground(themeType),
@@ -96,7 +100,7 @@ class HomeScreen extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            // Search bar
+            // Search bar (decorative)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Container(
@@ -128,7 +132,7 @@ class HomeScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Text(
-                'Categories',
+                'Quick Access',
                 style: GoogleFonts.orbitron(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
@@ -144,7 +148,7 @@ class HomeScreen extends StatelessWidget {
                   _buildCategory(
                     icon: Icons.music_note,
                     label: 'All Songs',
-                    sublabel: '128 Songs',
+                    sublabel: '${songs.length} Songs',
                     color: primaryColor,
                     textColor: textColor,
                   ),
@@ -152,7 +156,7 @@ class HomeScreen extends StatelessWidget {
                   _buildCategory(
                     icon: Icons.favorite,
                     label: 'Favorites',
-                    sublabel: '34 Songs',
+                    sublabel: '0 Songs',
                     color: Colors.redAccent,
                     textColor: textColor,
                   ),
@@ -160,7 +164,7 @@ class HomeScreen extends StatelessWidget {
                   _buildCategory(
                     icon: Icons.history,
                     label: 'Recent',
-                    sublabel: '24 Songs',
+                    sublabel: '${songs.length} Songs',
                     color: secondaryColor,
                     textColor: textColor,
                   ),
@@ -177,19 +181,22 @@ class HomeScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Playlists',
+                    'Your Playlist',
                     style: GoogleFonts.orbitron(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: textColor,
                     ),
                   ),
-                  Text(
-                    'See all',
-                    style: GoogleFonts.inter(
-                      fontSize: 13,
-                      color: primaryColor,
-                      fontWeight: FontWeight.w500,
+                  GestureDetector(
+                    onTap: () => audioProvider.pickAndAddSongs(),
+                    child: Text(
+                      'Add songs',
+                      style: GoogleFonts.inter(
+                        fontSize: 13,
+                        color: primaryColor,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ],
@@ -199,63 +206,107 @@ class HomeScreen extends StatelessWidget {
 
             // Playlist list
             Expanded(
-              child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                children: [
-                  ..._playlists.map((pl) => _buildPlaylistItem(
-                    name: pl['name'],
-                    count: pl['count'],
-                    primaryColor: primaryColor,
-                    secondaryColor: secondaryColor,
-                    textColor: textColor,
-                    themeType: themeType,
-                    onTap: onSongTap,
-                  )),
-                  const SizedBox(height: 12),
-                  // Now Playing mini bar
-                  GlassContainer(
-                    themeType: themeType,
-                    borderRadius: 16,
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 44,
-                          height: 44,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            gradient: LinearGradient(
-                              colors: [primaryColor.withValues(alpha: 0.7), secondaryColor.withValues(alpha: 0.5)],
+              child: songs.isEmpty
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.music_note, size: 64, color: textColor.withValues(alpha: 0.3)),
+                          const SizedBox(height: 16),
+                          Text(
+                            'No songs yet',
+                            style: GoogleFonts.inter(fontSize: 16, color: textColor.withValues(alpha: 0.5)),
+                          ),
+                          const SizedBox(height: 8),
+                          ElevatedButton.icon(
+                            onPressed: () => audioProvider.pickAndAddSongs(),
+                            icon: const Icon(Icons.add, size: 18),
+                            label: const Text('Add MP3 Files'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: primaryColor,
+                              foregroundColor: Colors.black,
                             ),
                           ),
-                          child: Icon(Icons.music_note, color: Colors.white70, size: 22),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Beyond the Horizon',
-                                style: GoogleFonts.inter(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                  color: textColor,
-                                ),
-                              ),
-                              Text(
-                                'Luna Orbit',
-                                style: GoogleFonts.inter(
-                                  fontSize: 12,
-                                  color: textColor.withValues(alpha: 0.5),
-                                ),
-                              ),
-                            ],
+                        ],
+                      ),
+                    )
+                  : ListView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      itemCount: songs.length > 4 ? 4 : songs.length,
+                      itemBuilder: (context, index) {
+                        final song = songs[index];
+                        return _buildSongItem(
+                          title: song.title,
+                          artist: song.artist,
+                          duration: song.durationText,
+                          isPlaying: currentSong == song && isPlaying,
+                          primaryColor: primaryColor,
+                          textColor: textColor,
+                          themeType: themeType,
+                          onTap: () => audioProvider.playSong(index),
+                        );
+                      },
+                    ),
+            ),
+
+            // Now Playing mini bar (shown when a song is playing)
+            if (currentSong != null)
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: GlassContainer(
+                  themeType: themeType,
+                  borderRadius: 16,
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 44,
+                        height: 44,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          gradient: LinearGradient(
+                            colors: [primaryColor.withValues(alpha: 0.7), secondaryColor.withValues(alpha: 0.5)],
                           ),
                         ),
-                        Icon(Icons.skip_previous, color: textColor.withValues(alpha: 0.7), size: 22),
-                        const SizedBox(width: 4),
-                        Container(
+                        child: Icon(
+                          isPlaying ? Icons.volume_up : Icons.music_note,
+                          color: Colors.white70,
+                          size: 22,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              currentSong.title,
+                              style: GoogleFonts.inter(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                color: textColor,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              currentSong.artist,
+                              style: GoogleFonts.inter(
+                                fontSize: 12,
+                                color: textColor.withValues(alpha: 0.5),
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => audioProvider.skipPrevious(),
+                        child: Icon(Icons.skip_previous, color: textColor.withValues(alpha: 0.7), size: 22),
+                      ),
+                      const SizedBox(width: 4),
+                      GestureDetector(
+                        onTap: () => audioProvider.togglePlay(),
+                        child: Container(
                           width: 36,
                           height: 36,
                           decoration: BoxDecoration(
@@ -263,17 +314,23 @@ class HomeScreen extends StatelessWidget {
                             color: primaryColor,
                             boxShadow: [MusicTheme.neonShadow(primaryColor, blurRadius: 8)],
                           ),
-                          child: const Icon(Icons.pause, color: Colors.black, size: 18),
+                          child: Icon(
+                            isPlaying ? Icons.pause : Icons.play_arrow,
+                            color: Colors.black,
+                            size: 18,
+                          ),
                         ),
-                        const SizedBox(width: 4),
-                        Icon(Icons.skip_next, color: textColor.withValues(alpha: 0.7), size: 22),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(width: 4),
+                      GestureDetector(
+                        onTap: () => audioProvider.skipNext(),
+                        child: Icon(Icons.skip_next, color: textColor.withValues(alpha: 0.7), size: 22),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 8),
-                ],
+                ),
               ),
-            ),
+            const SizedBox(height: 8),
           ],
         ),
       ),
@@ -321,14 +378,15 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPlaylistItem({
-    required String name,
-    required int count,
+  Widget _buildSongItem({
+    required String title,
+    required String artist,
+    required String duration,
+    required bool isPlaying,
     required Color primaryColor,
-    required Color secondaryColor,
     required Color textColor,
     required MusicThemeType themeType,
-    VoidCallback? onTap,
+    required VoidCallback onTap,
   }) {
     return GestureDetector(
       onTap: onTap,
@@ -336,9 +394,11 @@ class HomeScreen extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 10),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.05),
+          color: isPlaying ? primaryColor.withValues(alpha: 0.15) : Colors.white.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
+          border: Border.all(
+            color: isPlaying ? primaryColor.withValues(alpha: 0.3) : Colors.white.withValues(alpha: 0.08),
+          ),
         ),
         child: Row(
           children: [
@@ -350,10 +410,16 @@ class HomeScreen extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [primaryColor.withValues(alpha: 0.5), secondaryColor.withValues(alpha: 0.3)],
+                  colors: isPlaying
+                      ? [primaryColor.withValues(alpha: 0.7), primaryColor.withValues(alpha: 0.5)]
+                      : [primaryColor.withValues(alpha: 0.5), MusicTheme.getSecondaryColor(themeType).withValues(alpha: 0.3)],
                 ),
               ),
-              child: Icon(Icons.queue_music, color: Colors.white70, size: 24),
+              child: Icon(
+                isPlaying ? Icons.volume_up : Icons.music_note,
+                color: Colors.white70,
+                size: 24,
+              ),
             ),
             const SizedBox(width: 14),
             Expanded(
@@ -361,32 +427,31 @@ class HomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    name,
+                    title,
                     style: GoogleFonts.inter(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: textColor,
+                      color: isPlaying ? primaryColor : textColor,
                     ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    '$count Songs',
+                    artist,
                     style: GoogleFonts.inter(
                       fontSize: 12,
                       color: textColor.withValues(alpha: 0.5),
                     ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
             ),
-            Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: primaryColor.withValues(alpha: 0.15),
-                border: Border.all(color: primaryColor.withValues(alpha: 0.3)),
+            Text(
+              duration,
+              style: GoogleFonts.inter(
+                fontSize: 12,
+                color: textColor.withValues(alpha: 0.5),
               ),
-              child: Icon(Icons.play_arrow, color: primaryColor, size: 18),
             ),
           ],
         ),

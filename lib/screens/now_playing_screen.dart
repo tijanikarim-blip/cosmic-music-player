@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 import '../core/theme/music_theme.dart';
 import '../core/theme/theme_provider.dart';
+import '../core/audio/audio_provider.dart';
 import '../widgets/glass_container.dart';
 import '../widgets/neon_glow.dart';
 import '../widgets/waveform_visualizer.dart';
@@ -19,8 +21,6 @@ class NowPlayingScreen extends StatefulWidget {
 
 class _NowPlayingScreenState extends State<NowPlayingScreen>
     with SingleTickerProviderStateMixin {
-  bool _isPlaying = false;
-  double _progress = 0.35;
   late AnimationController _playButtonController;
 
   @override
@@ -40,20 +40,26 @@ class _NowPlayingScreenState extends State<NowPlayingScreen>
     super.dispose();
   }
 
-  void _togglePlay() {
-    setState(() => _isPlaying = !_isPlaying);
-    if (_isPlaying) {
-      _playButtonController.forward().then((_) => _playButtonController.reverse());
-    }
+  String _formatDuration(Duration d) {
+    final mins = d.inMinutes;
+    final secs = d.inSeconds % 60;
+    return '$mins:${secs.toString().padLeft(2, '0')}';
   }
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    final audioProvider = Provider.of<AudioProvider>(context);
     final themeType = themeProvider.currentTheme;
     final primaryColor = MusicTheme.getPrimaryColor(themeType);
     final textColor = MusicTheme.getTextColor(themeType);
     final secondaryColor = MusicTheme.getSecondaryColor(themeType);
+    final song = audioProvider.currentSong;
+
+    final isPlaying = audioProvider.isPlaying;
+    final position = audioProvider.position;
+    final duration = audioProvider.duration;
+    final progress = duration.inSeconds > 0 ? position.inSeconds / duration.inSeconds : 0.0;
 
     final buttonColor = themeType == MusicThemeType.goldenEclipse
         ? const Color(0xFF080600)
@@ -96,28 +102,43 @@ class _NowPlayingScreenState extends State<NowPlayingScreen>
                 child: NeonGlow(
                   glowColor: primaryColor,
                   radius: 24,
-                  isPlaying: _isPlaying,
+                  isPlaying: isPlaying,
                   child: RotatingAlbumArt(
                     size: 280,
-                    isPlaying: _isPlaying,
+                    isPlaying: isPlaying,
                     glowColor: primaryColor,
                     child: GlassContainer(
                       themeType: themeType,
                       width: 280,
                       height: 280,
                       borderRadius: 24,
-                      child: AlbumArtWidget(
-                        size: 280,
-                        primaryColor: primaryColor,
-                        secondaryColor: secondaryColor,
-                      ),
+                            child: song?.albumArtBytes != null
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(24),
+                                    child: Image.memory(
+                                      song!.albumArtBytes!,
+                                      width: 280,
+                                      height: 280,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (context, error, stackTrace) => AlbumArtWidget(
+                                        size: 280,
+                                        primaryColor: primaryColor,
+                                        secondaryColor: secondaryColor,
+                                      ),
+                                    ),
+                                )
+                              : AlbumArtWidget(
+                              size: 280,
+                              primaryColor: primaryColor,
+                              secondaryColor: secondaryColor,
+                            ),
                     ),
                   ),
                 ),
               ),
               const SizedBox(height: 32),
               Text(
-                'Cosmic Waves',
+                song?.title ?? 'No Track Selected',
                 style: GoogleFonts.orbitron(
                   fontSize: 24,
                   fontWeight: FontWeight.w600,
@@ -126,7 +147,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen>
               ),
               const SizedBox(height: 8),
               Text(
-                'Nebula Artist',
+                song?.artist ?? 'Select a song to play',
                 style: GoogleFonts.inter(
                   fontSize: 16,
                   color: textColor.withValues(alpha: 0.7),
@@ -136,12 +157,22 @@ class _NowPlayingScreenState extends State<NowPlayingScreen>
               WaveformVisualizer(
                 color: primaryColor,
                 secondaryColor: secondaryColor,
-                isPlaying: _isPlaying,
+                isPlaying: isPlaying,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(_formatDuration(position), style: GoogleFonts.inter(fontSize: 12, color: textColor.withValues(alpha: 0.5))),
+                  Text(_formatDuration(duration), style: GoogleFonts.inter(fontSize: 12, color: textColor.withValues(alpha: 0.5))),
+                ],
+              ),
               ElasticSlider(
-                value: _progress,
-                onChanged: (value) => setState(() => _progress = value),
+                value: progress.clamp(0.0, 1.0),
+                onChanged: (value) {
+                  final dur = audioProvider.duration;
+                  audioProvider.seek(Duration(milliseconds: (value * dur.inMilliseconds).round()));
+                },
                 activeColor: primaryColor,
                 inactiveColor: primaryColor.withValues(alpha: 0.3),
                 textColor: textColor,
@@ -151,15 +182,23 @@ class _NowPlayingScreenState extends State<NowPlayingScreen>
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   IconButton(
-                    icon: Icon(Icons.shuffle, color: textColor.withValues(alpha: 0.7)),
-                    onPressed: () {},
+                    icon: Icon(
+                      Icons.shuffle,
+                      color: audioProvider.isShuffle ? primaryColor : textColor.withValues(alpha: 0.7),
+                    ),
+                    onPressed: audioProvider.toggleShuffle,
                   ),
                   IconButton(
                     icon: Icon(Icons.skip_previous, color: textColor, size: 36),
-                    onPressed: () {},
+                    onPressed: audioProvider.skipPrevious,
                   ),
                   GestureDetector(
-                    onTap: _togglePlay,
+                    onTap: () {
+                      audioProvider.togglePlay();
+                      if (audioProvider.isPlaying) {
+                        _playButtonController.forward().then((_) => _playButtonController.reverse());
+                      }
+                    },
                     child: AnimatedBuilder(
                       animation: _playButtonController,
                       builder: (context, child) {
@@ -174,17 +213,16 @@ class _NowPlayingScreenState extends State<NowPlayingScreen>
                               color: primaryColor,
                               boxShadow: [
                                 MusicTheme.neonShadow(primaryColor, blurRadius: 16),
-                                if (_isPlaying)
+                                if (isPlaying)
                                   BoxShadow(
                                     color: primaryColor.withValues(alpha: 0.4),
                                     blurRadius: 30 + 20 * _playButtonController.value,
-                                    spreadRadius:
-                                        10 + 10 * _playButtonController.value,
+                                    spreadRadius: 10 + 10 * _playButtonController.value,
                                   ),
                               ],
                             ),
                             child: Icon(
-                              _isPlaying ? Icons.pause : Icons.play_arrow,
+                              isPlaying ? Icons.pause : Icons.play_arrow,
                               size: 36,
                               color: buttonColor,
                             ),
@@ -195,11 +233,16 @@ class _NowPlayingScreenState extends State<NowPlayingScreen>
                   ),
                   IconButton(
                     icon: Icon(Icons.skip_next, color: textColor, size: 36),
-                    onPressed: () {},
+                    onPressed: audioProvider.skipNext,
                   ),
                   IconButton(
-                    icon: Icon(Icons.repeat, color: textColor.withValues(alpha: 0.7)),
-                    onPressed: () {},
+                    icon: Icon(
+                      audioProvider.repeatMode == LoopMode.one
+                          ? Icons.repeat_one
+                          : Icons.repeat,
+                      color: audioProvider.repeatMode != LoopMode.off ? primaryColor : textColor.withValues(alpha: 0.7),
+                    ),
+                    onPressed: audioProvider.toggleRepeat,
                   ),
                 ],
               ),

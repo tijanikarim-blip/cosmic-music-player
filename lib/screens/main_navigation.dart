@@ -61,7 +61,7 @@ class _MainNavigationState extends State<MainNavigation>
           onPageChanged: (index) => setState(() => _currentIndex = index),
           physics: const NeverScrollableScrollPhysics(),
           children: [
-            HomeScreen(onSongTap: () => _onTabTap(1)),
+            HomeScreen(),
             const NowPlayingScreen(),
             const PlaylistScreen(),
             const SettingsScreen(),
