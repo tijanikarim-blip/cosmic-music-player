@@ -100,8 +100,8 @@ class _EqualizerScreenState extends State<EqualizerScreen>
                   Switch(
                     value: _customEnabled,
                     onChanged: (v) => setState(() => _customEnabled = v),
-                    activeColor: primaryColor,
-                    activeTrackColor: primaryColor.withOpacity(0.35),
+                     activeThumbColor: primaryColor,
+                    activeTrackColor: primaryColor.withValues(alpha: 0.35),
                   ),
                 ],
               ),
@@ -169,10 +169,10 @@ class _EqualizerScreenState extends State<EqualizerScreen>
                         margin: const EdgeInsets.only(right: 10),
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                         decoration: BoxDecoration(
-                          color: isSelected ? primaryColor : primaryColor.withOpacity(0.1),
+                          color: isSelected ? primaryColor : primaryColor.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(24),
                           border: Border.all(
-                            color: isSelected ? primaryColor : primaryColor.withOpacity(0.3),
+                            color: isSelected ? primaryColor : primaryColor.withValues(alpha: 0.3),
                           ),
                           boxShadow: isSelected
                               ? [MusicTheme.neonShadow(primaryColor, blurRadius: 12)]
@@ -267,7 +267,7 @@ class _EqualizerScreenState extends State<EqualizerScreen>
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: color.withOpacity(glowAnim * 0.5),
+                         color: color.withValues(alpha: glowAnim * 0.5),
                         blurRadius: 20 * glowAnim,
                         spreadRadius: 3 * glowAnim,
                       ),
@@ -332,7 +332,7 @@ class _EQBand extends StatelessWidget {
                   Container(
                     width: 4,
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.1),
+                      color: Colors.white.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
@@ -349,7 +349,7 @@ class _EQBand extends StatelessWidget {
                         borderRadius: BorderRadius.circular(2),
                         boxShadow: [
                           BoxShadow(
-                            color: color.withOpacity(glowIntensity * 0.8),
+                             color: color.withValues(alpha: glowIntensity * 0.8),
                             blurRadius: 6,
                             spreadRadius: 1,
                           ),
@@ -367,7 +367,7 @@ class _EQBand extends StatelessWidget {
                         color: color,
                         boxShadow: [
                           BoxShadow(
-                            color: color.withOpacity(glowIntensity),
+                             color: color.withValues(alpha: glowIntensity),
                             blurRadius: 8,
                             spreadRadius: 2,
                           ),
@@ -383,7 +383,7 @@ class _EQBand extends StatelessWidget {
         const SizedBox(height: 6),
         Text(
           label,
-          style: GoogleFonts.inter(fontSize: 9, color: textColor.withOpacity(0.5)),
+          style: GoogleFonts.inter(fontSize: 9, color: textColor.withValues(alpha: 0.5)),
         ),
       ],
     );
@@ -400,7 +400,7 @@ class _EQCurvePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = color.withOpacity(0.7)
+      ..color = color.withValues(alpha: 0.7)
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke
       ..maskFilter = MaskFilter.blur(BlurStyle.normal, 3 * glowIntensity);
@@ -456,7 +456,7 @@ class _KnobPainter extends CustomPainter {
     canvas.drawCircle(
       center,
       radius,
-      Paint()..color = Colors.black.withOpacity(0.6),
+      Paint()..color = Colors.black.withValues(alpha: 0.6),
     );
 
     // Gradient ring background
@@ -464,7 +464,7 @@ class _KnobPainter extends CustomPainter {
       center,
       radius - 4,
       Paint()
-        ..color = Colors.white.withOpacity(0.05)
+        ..color = Colors.white.withValues(alpha: 0.05)
         ..style = PaintingStyle.stroke
         ..strokeWidth = 8,
     );
@@ -501,7 +501,7 @@ class _KnobPainter extends CustomPainter {
     );
 
     // Center dot
-    canvas.drawCircle(center, 6, Paint()..color = color.withOpacity(0.8));
+    canvas.drawCircle(center, 6, Paint()..color = color.withValues(alpha: 0.8));
   }
 
   @override

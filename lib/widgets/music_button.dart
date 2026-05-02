@@ -50,7 +50,7 @@ class MusicButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(borderRadius),
               ),
               padding: padding,
-              shadowColor: btnColor.withOpacity( 0.3),
+              shadowColor: btnColor.withValues(alpha: 0.3),
               elevation: 0,
             ),
             icon: icon != null ? Icon(icon, size: 18) : const SizedBox.shrink(),
@@ -68,7 +68,7 @@ class MusicButton extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: btnColor,
               foregroundColor: txtColor,
-              shadowColor: btnColor.withOpacity( 0.5),
+              shadowColor: btnColor.withValues(alpha: 0.5),
               elevation: 4,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(borderRadius),

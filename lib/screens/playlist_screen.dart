@@ -43,7 +43,7 @@ class PlaylistScreen extends StatelessWidget {
                     style: GoogleFonts.orbitron(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
-                      color: textColor.withOpacity(0.5),
+                      color: textColor.withValues(alpha: 0.5),
                       letterSpacing: 2,
                     ),
                   ),
@@ -61,7 +61,7 @@ class PlaylistScreen extends StatelessWidget {
                     '${_songs.length} tracks',
                     style: GoogleFonts.inter(
                       fontSize: 14,
-                      color: textColor.withOpacity(0.5),
+                      color: textColor.withValues(alpha: 0.5),
                     ),
                   ),
                 ],
@@ -87,10 +87,10 @@ class PlaylistScreen extends StatelessWidget {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
                               gradient: LinearGradient(
-                                colors: [primaryColor.withOpacity(0.5), secondaryColor.withOpacity(0.3)],
+                                colors: [primaryColor.withValues(alpha: 0.5), secondaryColor.withValues(alpha: 0.3)],
                               ),
                             ),
-                            child: Icon(Icons.music_note, color: textColor.withOpacity(0.7)),
+                            child: Icon(Icons.music_note, color: textColor.withValues(alpha: 0.7)),
                           ),
                           const SizedBox(width: 16),
                           Expanded(
@@ -110,7 +110,7 @@ class PlaylistScreen extends StatelessWidget {
                                   song['artist']!,
                                   style: GoogleFonts.inter(
                                     fontSize: 14,
-                                    color: textColor.withOpacity(0.5),
+                                    color: textColor.withValues(alpha: 0.5),
                                   ),
                                 ),
                               ],
@@ -120,11 +120,11 @@ class PlaylistScreen extends StatelessWidget {
                             song['duration']!,
                             style: GoogleFonts.inter(
                               fontSize: 14,
-                              color: textColor.withOpacity(0.5),
+                              color: textColor.withValues(alpha: 0.5),
                             ),
                           ),
                           const SizedBox(width: 8),
-                          Icon(Icons.more_vert, color: textColor.withOpacity(0.5)),
+                          Icon(Icons.more_vert, color: textColor.withValues(alpha: 0.5)),
                         ],
                       ),
                     ),

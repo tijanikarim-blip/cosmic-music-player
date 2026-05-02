@@ -54,12 +54,12 @@ class _NeonGlowState extends State<NeonGlow>
             borderRadius: BorderRadius.circular(widget.radius),
             boxShadow: [
               BoxShadow(
-                color: widget.glowColor.withOpacity(intensity * 0.8),
+                color: widget.glowColor.withValues(alpha: intensity * 0.8),
                 blurRadius: 20 * intensity,
                 spreadRadius: 4 * intensity,
               ),
               BoxShadow(
-                color: widget.glowColor.withOpacity(intensity * 0.4),
+                 color: widget.glowColor.withValues(alpha: intensity * 0.4),
                 blurRadius: 40 * intensity,
                 spreadRadius: 10 * intensity,
               ),
@@ -157,7 +157,7 @@ class ParticlePainter extends CustomPainter {
       canvas.drawCircle(
         Offset(p.x * size.width, p.y * size.height),
         p.size,
-        Paint()..color = color.withOpacity(0.6),
+        Paint()..color = color.withValues(alpha: 0.6),
       );
     }
   }
@@ -221,30 +221,30 @@ class _MovingGradientBackgroundState extends State<MovingGradientBackground>
               colors: widget.themeType == MusicThemeType.emberOdyssey
                   ? [
                       const Color(0xFF0D0501),
-                      const Color(0xFF1A0A02).withOpacity(intensity),
+                       const Color(0xFF1A0A02).withValues(alpha: intensity),
                       const Color(0xFF0F0500),
                     ]
                   : widget.themeType == MusicThemeType.auroraWave
                       ? [
                           const Color(0xFF050A14),
-                          const Color(0xFF0A1428).withOpacity(intensity),
+                           const Color(0xFF0A1428).withValues(alpha: intensity),
                           const Color(0xFF050A14),
                         ]
                       : widget.themeType == MusicThemeType.goldenEclipse
                           ? [
                               const Color(0xFF080600),
-                              const Color(0xFF1A1400).withOpacity(intensity),
+                               const Color(0xFF1A1400).withValues(alpha: intensity),
                               const Color(0xFF0D0900),
                             ]
                           : widget.themeType == MusicThemeType.galaxyStorm
                               ? [
                                   const Color(0xFF06030F),
-                                  const Color(0xFF0C06A3).withOpacity(intensity),
+                                   const Color(0xFF0C06A3).withValues(alpha: intensity),
                                   const Color(0xFF06030F),
                                 ]
                               : [
                                   const Color(0xFF04020E),
-                                  const Color(0xFF080428).withOpacity(intensity),
+                                   const Color(0xFF080428).withValues(alpha: intensity),
                                   const Color(0xFF04020E),
                                 ],
               stops: const [0.0, 0.5, 1.0],
@@ -353,7 +353,7 @@ class MusicNotePainter extends CustomPainter {
         style: TextStyle(
           fontSize: n.size,
           fontFamily: Icons.music_note.fontFamily,
-          color: color.withOpacity(0.15 + 0.1 * sin(progress * 2 * pi + n.y * 4)),
+          color: color.withValues(alpha: 0.15 + 0.1 * sin(progress * 2 * pi + n.y * 4)),
         ),
       );
       textPainter.layout();

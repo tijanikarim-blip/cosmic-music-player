@@ -72,12 +72,12 @@ class _WaveformVisualizerState extends State<WaveformVisualizer>
                       end: Alignment.topCenter,
                       colors: [
                         widget.color,
-                        widget.secondaryColor.withOpacity(0.6),
+                        widget.secondaryColor.withValues(alpha: 0.6),
                       ],
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: widget.color.withOpacity(0.4),
+                        color: widget.color.withValues(alpha: 0.4),
                         blurRadius: 6,
                         spreadRadius: 1,
                       ),
@@ -103,12 +103,12 @@ class _WaveformVisualizerState extends State<WaveformVisualizer>
                       end: Alignment.topCenter,
                       colors: [
                         widget.secondaryColor,
-                        widget.color.withOpacity(0.4),
+                        widget.color.withValues(alpha: 0.4),
                       ],
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: widget.secondaryColor.withOpacity(0.3),
+                        color: widget.secondaryColor.withValues(alpha: 0.3),
                         blurRadius: 4,
                         spreadRadius: 0.5,
                       ),
@@ -129,10 +129,10 @@ class _WaveformVisualizerState extends State<WaveformVisualizer>
                   margin: const EdgeInsets.symmetric(horizontal: 0.5),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(1),
-                    color: widget.color.withOpacity(0.7),
+                    color: widget.color.withValues(alpha: 0.7),
                     boxShadow: [
                       BoxShadow(
-                        color: widget.color.withOpacity(0.5),
+                        color: widget.color.withValues(alpha: 0.5),
                         blurRadius: 3,
                         spreadRadius: 0.5,
                       ),
@@ -210,11 +210,11 @@ class _RotatingAlbumArtState extends State<RotatingAlbumArt>
                 borderRadius: BorderRadius.circular(24),
                 boxShadow: [
                   BoxShadow(
-                    color: widget.glowColor.withOpacity(
-                      widget.isPlaying
-                          ? 0.3 + 0.2 * sin(_breathingController.value * pi)
-                          : 0.2,
-                    ),
+                     color: widget.glowColor.withValues(
+                       alpha: widget.isPlaying
+                           ? 0.3 + 0.2 * sin(_breathingController.value * pi)
+                           : 0.2,
+                     ),
                     blurRadius: 30,
                     spreadRadius: 10,
                   ),

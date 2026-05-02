@@ -15,7 +15,7 @@ class SimpleParticlesPainter extends CustomPainter {
       final y = random.nextDouble() * size.height;
       final radius = 0.5 + random.nextDouble() * 2.0;
       final paint = Paint()
-        ..color = color.withOpacity(0.3 + random.nextDouble() * 0.4);
+         ..color = color.withValues(alpha: 0.3 + random.nextDouble() * 0.4);
       canvas.drawCircle(Offset(x, y), radius, paint);
     }
   }

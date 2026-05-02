@@ -80,7 +80,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen>
                     style: GoogleFonts.orbitron(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
-                      color: textColor.withOpacity(0.5),
+                      color: textColor.withValues(alpha: 0.5),
                       letterSpacing: 2,
                     ),
                   ),
@@ -129,7 +129,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen>
                 'Nebula Artist',
                 style: GoogleFonts.inter(
                   fontSize: 16,
-                  color: textColor.withOpacity(0.7),
+                  color: textColor.withValues(alpha: 0.7),
                 ),
               ),
               const SizedBox(height: 32),
@@ -143,7 +143,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen>
                 value: _progress,
                 onChanged: (value) => setState(() => _progress = value),
                 activeColor: primaryColor,
-                inactiveColor: primaryColor.withOpacity(0.3),
+                inactiveColor: primaryColor.withValues(alpha: 0.3),
                 textColor: textColor,
               ),
               const SizedBox(height: 32),
@@ -151,7 +151,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen>
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   IconButton(
-                    icon: Icon(Icons.shuffle, color: textColor.withOpacity(0.7)),
+                    icon: Icon(Icons.shuffle, color: textColor.withValues(alpha: 0.7)),
                     onPressed: () {},
                   ),
                   IconButton(
@@ -176,7 +176,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen>
                                 MusicTheme.neonShadow(primaryColor, blurRadius: 16),
                                 if (_isPlaying)
                                   BoxShadow(
-                                    color: primaryColor.withOpacity(0.4),
+                                    color: primaryColor.withValues(alpha: 0.4),
                                     blurRadius: 30 + 20 * _playButtonController.value,
                                     spreadRadius:
                                         10 + 10 * _playButtonController.value,
@@ -198,7 +198,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen>
                     onPressed: () {},
                   ),
                   IconButton(
-                    icon: Icon(Icons.repeat, color: textColor.withOpacity(0.7)),
+                    icon: Icon(Icons.repeat, color: textColor.withValues(alpha: 0.7)),
                     onPressed: () {},
                   ),
                 ],

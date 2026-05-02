@@ -73,7 +73,7 @@ class _ElasticSliderState extends State<ElasticSlider>
                   activeTrackColor: widget.activeColor,
                   inactiveTrackColor: widget.inactiveColor,
                   thumbColor: widget.activeColor,
-                  overlayColor: widget.activeColor.withOpacity(0.2),
+                  overlayColor: widget.activeColor.withValues(alpha: 0.2),
                   trackHeight: 4,
                   thumbShape: const _GlowingThumbShape(enabledThumbRadius: 8),
                 ),
@@ -88,8 +88,8 @@ class _ElasticSliderState extends State<ElasticSlider>
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('1:24', style: TextStyle(fontSize: 12, color: widget.textColor.withOpacity(0.5))),
-            Text('3:58', style: TextStyle(fontSize: 12, color: widget.textColor.withOpacity(0.5))),
+            Text('1:24', style: TextStyle(fontSize: 12, color: widget.textColor.withValues(alpha: 0.5))),
+            Text('3:58', style: TextStyle(fontSize: 12, color: widget.textColor.withValues(alpha: 0.5))),
           ],
         ),
       ],
@@ -127,7 +127,7 @@ class _GlowingThumbShape extends SliderComponentShape {
       ..color = sliderTheme.thumbColor!
       ..style = PaintingStyle.fill;
     final glowPaint = Paint()
-      ..color = sliderTheme.thumbColor!.withOpacity(0.4)
+      ..color = sliderTheme.thumbColor!.withValues(alpha: 0.4)
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8);
 
     canvas.drawCircle(center, enabledThumbRadius + 4, glowPaint);

@@ -90,13 +90,13 @@ class _MainNavigationState extends State<MainNavigation>
 
     return Container(
       decoration: BoxDecoration(
-        color: bgColor.withOpacity(0.97),
+        color: bgColor.withValues(alpha: 0.97),
         border: Border(
-          top: BorderSide(color: Colors.white.withOpacity(0.08), width: 1),
+          top: BorderSide(color: Colors.white.withValues(alpha: 0.08), width: 1),
         ),
         boxShadow: [
           BoxShadow(
-            color: primaryColor.withOpacity(0.08),
+            color: primaryColor.withValues(alpha: 0.08),
             blurRadius: 20,
             offset: const Offset(0, -4),
           ),
@@ -118,7 +118,7 @@ class _MainNavigationState extends State<MainNavigation>
                   duration: const Duration(milliseconds: 200),
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
-                    color: isActive ? primaryColor.withOpacity(0.12) : Colors.transparent,
+                    color: isActive ? primaryColor.withValues(alpha: 0.12) : Colors.transparent,
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Column(
@@ -128,7 +128,7 @@ class _MainNavigationState extends State<MainNavigation>
                         isActive
                             ? item['activeIcon'] as IconData
                             : item['icon'] as IconData,
-                        color: isActive ? primaryColor : textColor.withOpacity(0.45),
+                        color: isActive ? primaryColor : textColor.withValues(alpha: 0.45),
                         size: 24,
                       ),
                       const SizedBox(height: 3),
@@ -138,7 +138,7 @@ class _MainNavigationState extends State<MainNavigation>
                           fontSize: 11,
                           fontWeight:
                               isActive ? FontWeight.w600 : FontWeight.w400,
-                          color: isActive ? primaryColor : textColor.withOpacity(0.45),
+                          color: isActive ? primaryColor : textColor.withValues(alpha: 0.45),
                         ),
                       ),
                     ],

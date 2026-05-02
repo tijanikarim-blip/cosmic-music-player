@@ -90,7 +90,7 @@ class _AudioScreenState extends State<AudioScreen>
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: primaryColor.withOpacity(0.15),
+                            color: primaryColor.withValues(alpha: 0.15),
                             width: 1,
                           ),
                         ),
@@ -101,7 +101,7 @@ class _AudioScreenState extends State<AudioScreen>
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: primaryColor.withOpacity(0.2),
+                            color: primaryColor.withValues(alpha: 0.2),
                             width: 1,
                           ),
                         ),
@@ -114,13 +114,13 @@ class _AudioScreenState extends State<AudioScreen>
                           shape: BoxShape.circle,
                           gradient: RadialGradient(
                             colors: [
-                              primaryColor.withOpacity(0.25),
-                              primaryColor.withOpacity(0.05),
+                              primaryColor.withValues(alpha: 0.25),
+                              primaryColor.withValues(alpha: 0.05),
                             ],
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: primaryColor.withOpacity(0.4),
+                              color: primaryColor.withValues(alpha: 0.4),
                               blurRadius: 30,
                               spreadRadius: 5,
                             ),
@@ -129,7 +129,7 @@ class _AudioScreenState extends State<AudioScreen>
                         child: Icon(
                           Icons.headphones,
                           size: 54,
-                          color: textColor.withOpacity(0.9),
+                          color: textColor.withValues(alpha: 0.9),
                         ),
                       ),
                       // Orbiting nodes
@@ -160,12 +160,12 @@ class _AudioScreenState extends State<AudioScreen>
                         decoration: BoxDecoration(
                           color: isSelected
                               ? primaryColor
-                              : Colors.white.withOpacity(0.07),
+                              : Colors.white.withValues(alpha: 0.07),
                           borderRadius: BorderRadius.circular(24),
                           border: Border.all(
                             color: isSelected
                                 ? primaryColor
-                                : Colors.white.withOpacity(0.15),
+                                : Colors.white.withValues(alpha: 0.15),
                           ),
                           boxShadow: isSelected
                               ? [MusicTheme.neonShadow(primaryColor, blurRadius: 14)]
@@ -209,14 +209,14 @@ class _AudioScreenState extends State<AudioScreen>
                     const SizedBox(height: 12),
                     Row(
                       children: [
-                        Icon(Icons.volume_down, color: textColor.withOpacity(0.5), size: 18),
+                        Icon(Icons.volume_down, color: textColor.withValues(alpha: 0.5), size: 18),
                         Expanded(
                           child: SliderTheme(
                             data: SliderThemeData(
                               activeTrackColor: primaryColor,
-                              inactiveTrackColor: primaryColor.withOpacity(0.2),
+                              inactiveTrackColor: primaryColor.withValues(alpha: 0.2),
                               thumbColor: primaryColor,
-                              overlayColor: primaryColor.withOpacity(0.2),
+                              overlayColor: primaryColor.withValues(alpha: 0.2),
                               trackHeight: 4,
                               thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
                             ),
@@ -226,7 +226,7 @@ class _AudioScreenState extends State<AudioScreen>
                             ),
                           ),
                         ),
-                        Icon(Icons.volume_up, color: textColor.withOpacity(0.7), size: 18),
+                        Icon(Icons.volume_up, color: textColor.withValues(alpha: 0.7), size: 18),
                       ],
                     ),
                   ],
@@ -263,7 +263,7 @@ class _AudioScreenState extends State<AudioScreen>
                             'Follow your head movement',
                             style: GoogleFonts.inter(
                               fontSize: 12,
-                              color: textColor.withOpacity(0.5),
+                              color: textColor.withValues(alpha: 0.5),
                             ),
                           ),
                         ],
@@ -272,8 +272,8 @@ class _AudioScreenState extends State<AudioScreen>
                     Switch(
                       value: _headTracking,
                       onChanged: (v) => setState(() => _headTracking = v),
-                      activeColor: primaryColor,
-                      activeTrackColor: primaryColor.withOpacity(0.35),
+                       activeThumbColor: primaryColor,
+                      activeTrackColor: primaryColor.withValues(alpha: 0.35),
                     ),
                   ],
                 ),
@@ -303,7 +303,7 @@ class _AudioScreenState extends State<AudioScreen>
             color: i.isEven ? primary : secondary,
             boxShadow: [
               BoxShadow(
-                color: (i.isEven ? primary : secondary).withOpacity(0.8),
+                color: (i.isEven ? primary : secondary).withValues(alpha: 0.8),
                 blurRadius: 10,
                 spreadRadius: 2,
               ),
@@ -329,7 +329,7 @@ class _AudioScreenState extends State<AudioScreen>
         child: Icon(
           Icons.music_note,
           size: 18,
-          color: primary.withOpacity(0.5),
+          color: primary.withValues(alpha: 0.5),
         ),
       );
     });

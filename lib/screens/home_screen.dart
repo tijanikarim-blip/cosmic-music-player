@@ -45,7 +45,7 @@ class HomeScreen extends StatelessWidget {
                           'Good Evening',
                           style: GoogleFonts.inter(
                             fontSize: 14,
-                            color: textColor.withOpacity(0.6),
+                            color: textColor.withValues(alpha: 0.6),
                           ),
                         ),
                         const SizedBox(height: 2),
@@ -102,19 +102,19 @@ class HomeScreen extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.06),
+                  color: Colors.white.withValues(alpha: 0.06),
                   borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: Colors.white.withOpacity(0.12)),
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.search, color: textColor.withOpacity(0.5), size: 20),
+                    Icon(Icons.search, color: textColor.withValues(alpha: 0.5), size: 20),
                     const SizedBox(width: 10),
                     Text(
                       'Search your music',
                       style: GoogleFonts.inter(
                         fontSize: 14,
-                        color: textColor.withOpacity(0.4),
+                        color: textColor.withValues(alpha: 0.4),
                       ),
                     ),
                   ],
@@ -225,7 +225,7 @@ class HomeScreen extends StatelessWidget {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             gradient: LinearGradient(
-                              colors: [primaryColor.withOpacity(0.7), secondaryColor.withOpacity(0.5)],
+                              colors: [primaryColor.withValues(alpha: 0.7), secondaryColor.withValues(alpha: 0.5)],
                             ),
                           ),
                           child: Icon(Icons.music_note, color: Colors.white70, size: 22),
@@ -247,13 +247,13 @@ class HomeScreen extends StatelessWidget {
                                 'Luna Orbit',
                                 style: GoogleFonts.inter(
                                   fontSize: 12,
-                                  color: textColor.withOpacity(0.5),
+                                  color: textColor.withValues(alpha: 0.5),
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        Icon(Icons.skip_previous, color: textColor.withOpacity(0.7), size: 22),
+                        Icon(Icons.skip_previous, color: textColor.withValues(alpha: 0.7), size: 22),
                         const SizedBox(width: 4),
                         Container(
                           width: 36,
@@ -266,7 +266,7 @@ class HomeScreen extends StatelessWidget {
                           child: const Icon(Icons.pause, color: Colors.black, size: 18),
                         ),
                         const SizedBox(width: 4),
-                        Icon(Icons.skip_next, color: textColor.withOpacity(0.7), size: 22),
+                        Icon(Icons.skip_next, color: textColor.withValues(alpha: 0.7), size: 22),
                       ],
                     ),
                   ),
@@ -291,9 +291,9 @@ class HomeScreen extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.12),
+          color: color.withValues(alpha: 0.12),
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: color.withOpacity(0.25)),
+          border: Border.all(color: color.withValues(alpha: 0.25)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -312,7 +312,7 @@ class HomeScreen extends StatelessWidget {
               sublabel,
               style: GoogleFonts.inter(
                 fontSize: 10,
-                color: textColor.withOpacity(0.5),
+                color: textColor.withValues(alpha: 0.5),
               ),
             ),
           ],
@@ -336,9 +336,9 @@ class HomeScreen extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 10),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.05),
+          color: Colors.white.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: Colors.white.withOpacity(0.08)),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
         ),
         child: Row(
           children: [
@@ -350,7 +350,7 @@ class HomeScreen extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [primaryColor.withOpacity(0.5), secondaryColor.withOpacity(0.3)],
+                  colors: [primaryColor.withValues(alpha: 0.5), secondaryColor.withValues(alpha: 0.3)],
                 ),
               ),
               child: Icon(Icons.queue_music, color: Colors.white70, size: 24),
@@ -372,7 +372,7 @@ class HomeScreen extends StatelessWidget {
                     '$count Songs',
                     style: GoogleFonts.inter(
                       fontSize: 12,
-                      color: textColor.withOpacity(0.5),
+                      color: textColor.withValues(alpha: 0.5),
                     ),
                   ),
                 ],
@@ -383,8 +383,8 @@ class HomeScreen extends StatelessWidget {
               height: 32,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: primaryColor.withOpacity(0.15),
-                border: Border.all(color: primaryColor.withOpacity(0.3)),
+                color: primaryColor.withValues(alpha: 0.15),
+                border: Border.all(color: primaryColor.withValues(alpha: 0.3)),
               ),
               child: Icon(Icons.play_arrow, color: primaryColor, size: 18),
             ),

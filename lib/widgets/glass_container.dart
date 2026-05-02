@@ -40,7 +40,7 @@ class GlassContainer extends StatelessWidget {
             end: Alignment.bottomRight,
             colors: [
               MusicTheme.glassBackground,
-              MusicTheme.glassBackground.withOpacity(0.1),
+              MusicTheme.glassBackground.withValues(alpha: 0.1),
             ],
           ),
           border: Border.all(

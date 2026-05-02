@@ -139,7 +139,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             'Theme',
                             style: GoogleFonts.inter(
                               fontSize: 12,
-                              color: textColor.withOpacity(0.5),
+                              color: textColor.withValues(alpha: 0.5),
                             ),
                           ),
                         ],
@@ -148,9 +148,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
-                        color: primaryColor.withOpacity(0.15),
+                        color: primaryColor.withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: primaryColor.withOpacity(0.3)),
+                        border: Border.all(color: primaryColor.withValues(alpha: 0.3)),
                       ),
                       child: Text(
                         'Active',
@@ -210,14 +210,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                             colors: [
-                              (theme['color'] as Color).withOpacity(0.5),
-                              (theme['secondary'] as Color).withOpacity(0.3),
+                              (theme['color'] as Color).withValues(alpha: 0.5),
+                              (theme['secondary'] as Color).withValues(alpha: 0.3),
                             ],
                           ),
                           border: Border.all(
                             color: isActive
                                 ? (theme['color'] as Color)
-                                : Colors.white.withOpacity(0.1),
+                                : Colors.white.withValues(alpha: 0.1),
                             width: isActive ? 2 : 1,
                           ),
                           boxShadow: isActive
@@ -384,14 +384,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Switch(
                 value: value,
                 onChanged: onChanged,
-                activeColor: color,
-                activeTrackColor: color.withOpacity(0.35),
+                 activeThumbColor: color,
+                activeTrackColor: color.withValues(alpha: 0.35),
               ),
             ],
           ),
         ),
         if (showDivider)
-          Divider(height: 1, color: Colors.white.withOpacity(0.07)),
+          Divider(height: 1, color: Colors.white.withValues(alpha: 0.07)),
       ],
     );
   }
@@ -423,20 +423,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   trailingLabel,
                   style: GoogleFonts.inter(
                     fontSize: 13,
-                    color: textColor.withOpacity(0.5),
+                    color: textColor.withValues(alpha: 0.5),
                   ),
                 ),
               const SizedBox(width: 6),
               Icon(
                 Icons.arrow_forward_ios,
-                color: textColor.withOpacity(0.4),
+                color: textColor.withValues(alpha: 0.4),
                 size: 14,
               ),
             ],
           ),
         ),
         if (showDivider)
-          Divider(height: 1, color: Colors.white.withOpacity(0.07)),
+          Divider(height: 1, color: Colors.white.withValues(alpha: 0.07)),
       ],
     );
   }

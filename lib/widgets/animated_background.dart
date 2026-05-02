@@ -37,7 +37,7 @@ class AnimatedCosmicBackground extends StatelessWidget {
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
                   colors: [
-                    colors[0].withOpacity(0.4),
+                    colors[0].withValues(alpha: 0.4),
                     Colors.transparent,
                   ],
                 ),
@@ -54,7 +54,7 @@ class AnimatedCosmicBackground extends StatelessWidget {
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
                   colors: [
-                    colors[1].withOpacity(0.3),
+                    colors[1].withValues(alpha: 0.3),
                     Colors.transparent,
                   ],
                 ),
@@ -101,9 +101,9 @@ class RichParticlesPainter extends CustomPainter {
       final y = _random.nextDouble() * size.height;
       final radius = 0.5 + _random.nextDouble() * 2.5;
       final paint = Paint()
-        ..color = colors[i % colors.length].withOpacity(
-            0.3 + _random.nextDouble() * 0.5,
-          );
+         ..color = colors[i % colors.length].withValues(
+             alpha: 0.3 + _random.nextDouble() * 0.5,
+           );
       canvas.drawCircle(Offset(x, y), radius, paint);
     }
   }

@@ -49,19 +49,19 @@ class _AlbumArtWidgetState extends State<AlbumArtWidget>
         gradient: SweepGradient(
           center: Alignment.center,
           colors: [
-            widget.primaryColor.withOpacity(0.7),
-            widget.secondaryColor.withOpacity(0.5),
-            widget.primaryColor.withOpacity(0.7),
+            widget.primaryColor.withValues(alpha: 0.7),
+            widget.secondaryColor.withValues(alpha: 0.5),
+            widget.primaryColor.withValues(alpha: 0.7),
           ],
           stops: const [0.0, 0.5, 1.0],
         ),
         border: Border.all(
-          color: widget.primaryColor.withOpacity(0.8),
+          color: widget.primaryColor.withValues(alpha: 0.8),
           width: 2,
         ),
         boxShadow: [
           BoxShadow(
-            color: widget.primaryColor.withOpacity(0.6),
+            color: widget.primaryColor.withValues(alpha: 0.6),
             blurRadius: 40,
             spreadRadius: 15,
           ),
@@ -91,7 +91,7 @@ class _AlbumArtWidgetState extends State<AlbumArtWidget>
           Icon(
             Icons.album,
             size: widget.size * 0.2,
-            color: widget.primaryColor.withOpacity(0.9),
+            color: widget.primaryColor.withValues(alpha: 0.9),
           ),
           // Glowing edge
           Container(
@@ -100,7 +100,7 @@ class _AlbumArtWidgetState extends State<AlbumArtWidget>
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24),
               border: Border.all(
-                color: widget.primaryColor.withOpacity(0.8),
+                color: widget.primaryColor.withValues(alpha: 0.8),
                 width: 1.5,
               ),
             ),
@@ -130,7 +130,7 @@ class GeometricPainter extends CustomPainter {
       final radius = size.width * 0.35;
       final dx = center.dx + cos(angle) * radius * 0.3;
       final dy = center.dy + sin(angle) * radius * 0.3;
-      paint.color = (i.isEven ? primary : secondary).withOpacity(0.5);
+      paint.color = (i.isEven ? primary : secondary).withValues(alpha: 0.5);
       canvas.drawCircle(Offset(dx, dy), radius * 0.7, paint);
     }
   }

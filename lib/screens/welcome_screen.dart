@@ -67,7 +67,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     'Experience music in deep space',
                     style: GoogleFonts.inter(
                       fontSize: 16,
-                      color: _getTextColor(_selectedTheme).withOpacity(0.7),
+                      color: _getTextColor(_selectedTheme).withValues(alpha: 0.7),
                     ),
                   ),
                   const Spacer(),
@@ -76,7 +76,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     style: GoogleFonts.orbitron(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
-                      color: _getTextColor(_selectedTheme).withOpacity(0.5),
+                      color: _getTextColor(_selectedTheme).withValues(alpha: 0.5),
                       letterSpacing: 2,
                     ),
                   ),
@@ -117,7 +117,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                   style: GoogleFonts.inter(
                                     fontSize: 10,
                                     fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                                    color: _getTextColor(_selectedTheme).withOpacity(0.8),
+                                    color: _getTextColor(_selectedTheme).withValues(alpha: 0.8),
                                   ),
                                 ),
                               ],

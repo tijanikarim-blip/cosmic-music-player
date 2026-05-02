@@ -109,7 +109,7 @@ class _SleepTimerScreenState extends State<SleepTimerScreen>
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: primaryColor.withOpacity(0.1 * _pulseAnimation.value),
+                               color: primaryColor.withValues(alpha: 0.1 * _pulseAnimation.value),
                               width: 1,
                             ),
                           ),
@@ -122,10 +122,10 @@ class _SleepTimerScreenState extends State<SleepTimerScreen>
                             shape: BoxShape.circle,
                             gradient: SweepGradient(
                               colors: [
-                                primaryColor.withOpacity(0.8),
-                                secondaryColor.withOpacity(0.4),
-                                primaryColor.withOpacity(0.1),
-                                primaryColor.withOpacity(0.8),
+                                primaryColor.withValues(alpha: 0.8),
+                                secondaryColor.withValues(alpha: 0.4),
+                                primaryColor.withValues(alpha: 0.1),
+                                primaryColor.withValues(alpha: 0.8),
                               ],
                               stops: const [0.0, 0.4, 0.7, 1.0],
                               transform: GradientRotation(
@@ -147,7 +147,7 @@ class _SleepTimerScreenState extends State<SleepTimerScreen>
                                   Icon(
                                     Icons.nightlight_round,
                                     size: 30,
-                                    color: primaryColor.withOpacity(0.7),
+                                    color: primaryColor.withValues(alpha: 0.7),
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
@@ -158,7 +158,7 @@ class _SleepTimerScreenState extends State<SleepTimerScreen>
                                       color: textColor,
                                       shadows: [
                                         Shadow(
-                                          color: primaryColor.withOpacity(0.5),
+                                          color: primaryColor.withValues(alpha: 0.5),
                                           blurRadius: 20,
                                         ),
                                       ],
@@ -168,7 +168,7 @@ class _SleepTimerScreenState extends State<SleepTimerScreen>
                                     'min',
                                     style: GoogleFonts.inter(
                                       fontSize: 14,
-                                      color: textColor.withOpacity(0.5),
+                                      color: textColor.withValues(alpha: 0.5),
                                     ),
                                   ),
                                 ],
@@ -194,7 +194,7 @@ class _SleepTimerScreenState extends State<SleepTimerScreen>
                   'Recommended',
                   style: GoogleFonts.inter(
                     fontSize: 13,
-                    color: Colors.white.withOpacity(0.5),
+                    color: Colors.white.withValues(alpha: 0.5),
                   ),
                 ),
               ),
@@ -216,13 +216,13 @@ class _SleepTimerScreenState extends State<SleepTimerScreen>
                       height: 58,
                       decoration: BoxDecoration(
                         color: isSelected
-                            ? primaryColor.withOpacity(0.2)
-                            : Colors.white.withOpacity(0.05),
+                            ? primaryColor.withValues(alpha: 0.2)
+                            : Colors.white.withValues(alpha: 0.05),
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
                           color: isSelected
                               ? primaryColor
-                              : Colors.white.withOpacity(0.1),
+                              : Colors.white.withValues(alpha: 0.1),
                           width: isSelected ? 2 : 1,
                         ),
                         boxShadow: isSelected
@@ -245,8 +245,8 @@ class _SleepTimerScreenState extends State<SleepTimerScreen>
                             style: GoogleFonts.inter(
                               fontSize: 9,
                               color: isSelected
-                                  ? primaryColor.withOpacity(0.8)
-                                  : Colors.white.withOpacity(0.4),
+                                  ? primaryColor.withValues(alpha: 0.8)
+                                  : Colors.white.withValues(alpha: 0.4),
                             ),
                           ),
                         ],
@@ -311,7 +311,7 @@ class _SleepTimerScreenState extends State<SleepTimerScreen>
               color: color,
               boxShadow: [
                 BoxShadow(
-                  color: color.withOpacity(0.8),
+                  color: color.withValues(alpha: 0.8),
                   blurRadius: 10,
                   spreadRadius: 2,
                 ),
